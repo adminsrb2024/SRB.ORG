@@ -334,57 +334,60 @@ const EMAILJS_PUBLIC_KEY = "tTDL_g9ChY2fiUl4t";
 const EMAILJS_SERVICE_ID = "service_rka3imy";
 const EMAILJS_TEMPLATE_ID = "template_5j956tn";
 
-// Global variable for Supabase Client
-let supabase;
-let isAdminLoggedIn = false;
+// Global variable
+var supabase = null;
+var isAdminLoggedIn = false;
 
-// ============ APP INITIALIZATION (FIXED) ============
-window.onload = function() {
-    // 1. Start App UI Immediately
-    setTimeout(()=>{
-      document.getElementById("splash").style.display="none";
-      document.getElementById("app").classList.remove("hidden");
-      
-      // Check Admin Session
-      if(sessionStorage.getItem('srb_admin') === 'true') {
-          isAdminLoggedIn = true;
-          updateAdminUI();
-      }
-      
-      // 2. Initialize Database Connection (Inside try-catch)
-      try {
-         if(window.supabase) {
-             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-             // Load Data
-             loadStats();
-             loadRecentRequests();
-             loadNotices();
-         } else {
-             console.error("Supabase library not found");
-             document.getElementById('recentRequestsList').innerHTML = "<p style='color:red; text-align:center;'>Connection Error. Please refresh.</p>";
-         }
-      } catch(e) {
-         console.error(e);
-         document.getElementById('recentRequestsList').innerHTML = "<p style='color:red; text-align:center;'>Initialization Failed.</p>";
-      }
-
+// ============ ROBUST INITIALIZATION ============
+// This ensures app opens even if image loading hangs
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Force Open App after 2.5s
+    setTimeout(function() {
+        document.getElementById("splash").style.display = "none";
+        document.getElementById("app").classList.remove("hidden");
+        
+        // Check Admin Session
+        if(sessionStorage.getItem('srb_admin') === 'true') {
+            isAdminLoggedIn = true;
+            updateAdminUI();
+        }
+        
+        // 2. Initialize Database
+        initDatabase();
     }, 2500);
-    
-    // Init EmailJS
-    if(typeof emailjs !== 'undefined'){ emailjs.init(EMAILJS_PUBLIC_KEY); }
-};
+});
+
+function initDatabase() {
+    try {
+        if(window.supabase) {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            // Init EmailJS
+            if(typeof emailjs !== 'undefined') emailjs.init(EMAILJS_PUBLIC_KEY);
+            
+            // Load Data
+            loadStats();
+            loadRecentRequests();
+            loadNotices();
+        } else {
+            console.log("Supabase library missing");
+            document.getElementById('recentRequestsList').innerHTML = "<p style='color:red; text-align:center;'>Connection Error</p>";
+        }
+    } catch(e) {
+        console.error(e);
+    }
+}
 
 // ============ NAVIGATION ============
 function toggleMenu(){
-  const menu = document.getElementById("menu");
-  const overlay = document.getElementById("overlay");
+  var menu = document.getElementById("menu");
+  var overlay = document.getElementById("overlay");
   menu.classList.toggle("active");
   overlay.style.display = menu.classList.contains("active") ? "block" : "none";
 }
 
 function hidePages(){
-  const pages = ["home", "findDonor", "request", "beDonor", "eligibility", "adminLogin", "adminPanel"];
-  pages.forEach(id=> document.getElementById(id).classList.add("hidden"));
+  var pages = ["home", "findDonor", "request", "beDonor", "eligibility", "adminLogin", "adminPanel"];
+  pages.forEach(function(id){ document.getElementById(id).classList.add("hidden"); });
 }
 
 function openPage(id){
@@ -392,23 +395,19 @@ function openPage(id){
   document.getElementById(id).classList.remove("hidden");
   window.scrollTo(0, 0);
   if(document.getElementById("menu").classList.contains("active")) toggleMenu();
-  
   if(id === 'adminPanel') loadAdminRequests();
 }
 
 // ============ ADMIN LOGIC ============
 function handleAdminClick() {
-    if(isAdminLoggedIn) {
-        openPage('adminPanel');
-    } else {
-        openPage('adminLogin');
-    }
+    if(isAdminLoggedIn) { openPage('adminPanel'); } 
+    else { openPage('adminLogin'); }
     toggleMenu();
 }
 
 function attemptLogin() {
-    const email = document.getElementById('adminEmail').value;
-    const pass = document.getElementById('adminPass').value;
+    var email = document.getElementById('adminEmail').value;
+    var pass = document.getElementById('adminPass').value;
     
     if(email === ADMIN_EMAIL && pass === ADMIN_PASS) {
         isAdminLoggedIn = true;
@@ -429,32 +428,28 @@ function logoutAdmin() {
 }
 
 function updateAdminUI() {
-    const menuText = document.getElementById('adminMenuText');
-    menuText.innerText = isAdminLoggedIn ? "Admin Dashboard" : "Admin Panel";
+    document.getElementById('adminMenuText').innerText = isAdminLoggedIn ? "Admin Dashboard" : "Admin Panel";
 }
 
 // ============ ADMIN ACTIONS ============
-
-async function loadAdminRequests() {
-    const container = document.getElementById('adminRequestList');
+function loadAdminRequests() {
+    var container = document.getElementById('adminRequestList');
     container.innerHTML = "<div class='loader' style='margin:20px auto;'></div>";
     if(!supabase) return;
     
-    try {
-        const { data, error } = await supabase
-            .from('requests')
-            .select('*')
-            .order('created_at', { ascending: false });
-            
+    supabase.from('requests').select('*').order('created_at', { ascending: false })
+    .then(function(response) {
+        var data = response.data;
+        var error = response.error;
         if(error) throw error;
         
-        if(data.length === 0) {
+        container.innerHTML = "";
+        if(!data || data.length === 0) {
             container.innerHTML = "<p style='text-align:center; color:#888;'>No requests found.</p>";
             return;
         }
         
-        container.innerHTML = "";
-        data.forEach(req => {
+        data.forEach(function(req) {
             container.innerHTML += `
                 <div class="donor-card ${req.is_solved ? 'solved' : ''}" style="flex-wrap:wrap;">
                     <div class="donor-avatar">${req.blood_group}</div>
@@ -470,114 +465,80 @@ async function loadAdminRequests() {
                 </div>
             `;
         });
-        
-    } catch(e) {
+    }).catch(function(e) {
         console.error(e);
         container.innerHTML = "<p style='color:red; text-align:center;'>Error loading data.</p>";
-    }
+    });
 }
 
-async function toggleSolved(id, currentStatus) {
+function toggleSolved(id, currentStatus) {
     if(!supabase) return;
-    try {
-        const { error } = await supabase
-            .from('requests')
-            .update({ is_solved: !currentStatus })
-            .eq('id', id);
-            
-        if(error) throw error;
+    supabase.from('requests').update({ is_solved: !currentStatus }).eq('id', id)
+    .then(function() {
         loadAdminRequests();
         loadRecentRequests();
         loadStats();
-    } catch(e) {
-        alert("Error updating status");
-    }
+    }).catch(function(e) { alert("Error updating status"); });
 }
 
-async function deleteRequest(id) {
+function deleteRequest(id) {
     if(!supabase) return;
-    if(confirm("Are you sure you want to delete this request?")) {
-        try {
-            const { error } = await supabase
-                .from('requests')
-                .delete()
-                .eq('id', id);
-                
-            if(error) throw error;
+    if(confirm("Delete this request?")) {
+        supabase.from('requests').delete().eq('id', id)
+        .then(function() {
             loadAdminRequests();
             loadRecentRequests();
             loadStats();
-        } catch(e) {
-            alert("Error deleting request");
-        }
+        }).catch(function(e) { alert("Error deleting"); });
     }
 }
 
-async function postNotice() {
+function postNotice() {
     if(!supabase) return;
-    const text = document.getElementById('noticeText').value;
+    var text = document.getElementById('noticeText').value;
     if(!text) return;
     
-    try {
-        await supabase.from('notices').delete().neq('id', 0);
-        const { error } = await supabase
-            .from('notices')
-            .insert([{ content: text }]);
-            
-        if(error) throw error;
-        
-        alert("Notice Posted!");
-        document.getElementById('noticeText').value = "";
-        loadNotices();
-    } catch(e) {
-        console.error(e);
-        alert("Error posting notice.");
-    }
+    // Simple: Delete old, insert new
+    supabase.from('notices').delete().neq('id', 0).then(function() {
+        supabase.from('notices').insert([{ content: text }]).then(function(response) {
+            if(response.error) alert("Error posting notice. Check SQL RLS.");
+            else { alert("Notice Posted!"); document.getElementById('noticeText').value = ""; loadNotices(); }
+        });
+    });
 }
 
-async function deleteNotice() {
+function deleteNotice() {
     if(!supabase) return;
-    try {
-        await supabase.from('notices').delete().neq('id', 0);
-        loadNotices();
-    } catch(e) {}
+    supabase.from('notices').delete().neq('id', 0).then(function() { loadNotices(); });
 }
 
 // ============ PUBLIC DATA LOADERS ============
-
-async function loadStats() {
+function loadStats() {
     if(!supabase) return;
-    try {
-        const { count: dCount } = await supabase.from('donors').select('*', { count: 'exact', head: true });
-        document.getElementById('statDonors').innerText = (dCount || 0) + '+';
-        
-        const { count: rCount } = await supabase.from('requests').select('*', { count: 'exact', head: true }).eq('is_solved', false);
-        document.getElementById('statRequests').innerText = (rCount || 0) + '+';
-    } catch(e) {
-        console.error("Stats Error", e);
-    }
+    supabase.from('donors').select('*', { count: 'exact', head: true })
+    .then(function(response) { document.getElementById('statDonors').innerText = (response.count || 0) + '+'; });
+    
+    supabase.from('requests').select('*', { count: 'exact', head: true }).eq('is_solved', false)
+    .then(function(response) { document.getElementById('statRequests').innerText = (response.count || 0) + '+'; });
 }
 
-async function loadRecentRequests() {
+function loadRecentRequests() {
     if(!supabase) return;
-    const container = document.getElementById('recentRequestsList');
-    try {
-        const { data, error } = await supabase
-            .from('requests')
-            .select('*')
-            .eq('is_solved', false)
-            .order('created_at', { ascending: false })
-            .limit(5);
-
-        if (error) throw error;
+    var container = document.getElementById('recentRequestsList');
+    
+    supabase.from('requests').select('*').eq('is_solved', false).order('created_at', { ascending: false }).limit(5)
+    .then(function(response) {
+        var data = response.data;
+        var error = response.error;
+        if(error) throw error;
 
         container.innerHTML = "";
-        if(data.length === 0) {
+        if(!data || data.length === 0) {
             container.innerHTML = "<p style='text-align:center; color:#888; font-size:13px;'>No active requests right now.</p>";
             return;
         }
 
-        data.forEach(req => {
+        data.forEach(function(req) {
             container.innerHTML += `
                 <div class="donor-card urgent-card">
                     <div class="donor-avatar">${req.blood_group}</div>
@@ -589,112 +550,96 @@ async function loadRecentRequests() {
                 </div>
             `;
         });
-    } catch(e) {
+    }).catch(function(e) {
         container.innerHTML = "<p style='color:red; text-align:center;'>Error loading requests.</p>";
-    }
+    });
 }
 
-async function loadNotices() {
+function loadNotices() {
     if(!supabase) return;
-    const area = document.getElementById('noticeArea');
-    try {
-        const { data, error } = await supabase
-            .from('notices')
-            .select('*')
-            .limit(1);
-            
-        if(error) throw error;
-        
+    var area = document.getElementById('noticeArea');
+    supabase.from('notices').select('*').limit(1)
+    .then(function(response) {
+        var data = response.data;
         if(data && data.length > 0) {
-            area.innerHTML = `
-                <div class="notice-board card">
-                    <h4><i class="fas fa-bullhorn"></i> Notice</h4>
-                    <p>${data[0].content}</p>
-                </div>
-            `;
-        } else {
-            area.innerHTML = "";
-        }
-    } catch(e) {
-        console.error("Notice Error", e);
-    }
+            area.innerHTML = `<div class="notice-board card"><h4><i class="fas fa-bullhorn"></i> Notice</h4><p>${data[0].content}</p></div>`;
+        } else { area.innerHTML = ""; }
+    });
 }
 
 // ============ USER ACTIONS ============
-
-async function registerDonor() {
-    if(!supabase) { alert("App is loading, please wait..."); return; }
-    const name = document.getElementById("donorName").value;
-    const phone = document.getElementById("donorPhone").value;
-    const blood = document.getElementById("donorBlood").value;
-    const location = document.getElementById("donorLocation").value;
+function registerDonor() {
+    if(!supabase) { alert("App loading..."); return; }
+    var name = document.getElementById("donorName").value;
+    var phone = document.getElementById("donorPhone").value;
+    var blood = document.getElementById("donorBlood").value;
+    var location = document.getElementById("donorLocation").value;
 
     if(!name || !phone || !location) { alert("Please fill all fields!"); return; }
 
-    const btn = event.target;
+    var btn = event.target;
     btn.disabled = true;
     btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Saving...";
 
-    try {
-        const { error } = await supabase.from('donors').insert([{ name, blood, phone, location }]);
-        if (error) throw error;
-        
-        alert("Success! You are now registered.");
+    supabase.from('donors').insert([{ name: name, blood: blood, phone: phone, location: location }])
+    .then(function(response) {
+        if(response.error) throw response.error;
+        alert("Success!");
         document.getElementById("donorName").value = "";
         document.getElementById("donorPhone").value = "";
         document.getElementById("donorLocation").value = "";
         loadStats();
         openPage('home');
-    } catch (err) {
+    }).catch(function(err) {
         alert("Error saving data.");
-        console.error(err);
-    } finally {
+    }).finally(function() {
         btn.disabled = false;
         btn.innerHTML = "<i class='fas fa-user-plus'></i> Register Now";
-    }
+    });
 }
 
-async function submitBloodRequest() {
-    if(!supabase) { alert("App is loading, please wait..."); return; }
-    const patient = document.getElementById("patient").value;
-    const location = document.getElementById("location").value;
-    const contact = document.getElementById("reqContact").value;
-    const blood = document.getElementById("reqBlood").value;
-    const date = document.getElementById("reqDate").value;
+function submitBloodRequest() {
+    if(!supabase) { alert("App loading..."); return; }
+    var patient = document.getElementById("patient").value;
+    var location = document.getElementById("location").value;
+    var contact = document.getElementById("reqContact").value;
+    var blood = document.getElementById("reqBlood").value;
+    var date = document.getElementById("reqDate").value;
 
     if(!patient || !location || !contact || !date) { alert("Please fill all fields!"); return; }
 
-    const btn = event.target;
+    var btn = event.target;
     btn.disabled = true;
     btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Posting...";
 
-    try {
-        const { error } = await supabase.from('requests').insert([{
-            patient_name: patient, blood_group: blood, location, contact, required_date: date
-        }]);
-        if (error) throw error;
+    supabase.from('requests').insert([{
+        patient_name: patient, blood_group: blood, location: location, contact: contact, required_date: date
+    }])
+    .then(function(response) {
+        if(response.error) throw response.error;
+        
+        // Send Email
+        if(typeof emailjs !== 'undefined') {
+            var templateParams = { to_email: "omorhosshin@gmail.com", subject: "New Blood Request", message: `Patient: ${patient}\nBlood: ${blood}\nLoc: ${location}\nContact: ${contact}` };
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+        }
 
-        const templateParams = { to_email: "omorhosshin@gmail.com", subject: "New Blood Request", message: `Patient: ${patient}\nBlood: ${blood}\nLoc: ${location}\nContact: ${contact}` };
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-
-        alert("Request Posted Successfully!");
+        alert("Request Posted!");
         loadRecentRequests();
         loadStats();
         openPage('home');
-
-    } catch (err) {
+    }).catch(function(err) {
         alert("Error submitting request.");
-        console.error(err);
-    } finally {
+    }).finally(function() {
         btn.disabled = false;
         btn.innerHTML = "<i class='fas fa-paper-plane'></i> Submit Request";
-    }
+    });
 }
 
-async function filterDonors() {
+function filterDonors() {
     if(!supabase) return;
-    const selectedBlood = document.getElementById("searchBlood").value;
-    const container = document.getElementById("donorListContainer");
+    var selectedBlood = document.getElementById("searchBlood").value;
+    var container = document.getElementById("donorListContainer");
     container.innerHTML = "";
 
     if (!selectedBlood) {
@@ -704,15 +649,16 @@ async function filterDonors() {
 
     container.innerHTML = `<div class="loader" style="margin:20px auto;"></div>`;
 
-    try {
-        const { data, error } = await supabase.from('donors').select('*').eq('blood', selectedBlood);
-        if (error) throw error;
+    supabase.from('donors').select('*').eq('blood', selectedBlood)
+    .then(function(response) {
+        var data = response.data;
+        if(response.error) throw response.error;
 
         container.innerHTML = "";
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
             container.innerHTML = `<div class="card" style="text-align:center;"><p>No donors found for ${selectedBlood}.</p></div>`;
         } else {
-            data.forEach(donor => {
+            data.forEach(function(donor) {
                 container.innerHTML += `
                     <div class="donor-card">
                         <div class="donor-avatar">${donor.blood}</div>
@@ -725,9 +671,9 @@ async function filterDonors() {
                 `;
             });
         }
-    } catch (err) {
+    }).catch(function(err) {
         container.innerHTML = `<div class="card" style="text-align:center; color:red;"><p>Error loading data.</p></div>`;
-    }
+    });
 }
 </script>
 </body>
