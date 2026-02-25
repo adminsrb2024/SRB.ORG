@@ -84,7 +84,6 @@ body{background:var(--bg);padding-bottom:90px; color: var(--text);}
 .dash-icon { width: 45px; height: 45px; background: var(--primary-light); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin: 0 auto 10px; transition: 0.3s; }
 .dash-card:hover .dash-icon { background: var(--primary); color: white; }
 .dash-title { font-weight: 600; font-size: 14px; color: var(--text); }
-.dash-desc { font-size: 10px; color: var(--text-light); margin-top: 3px; }
 
 /* FORMS */
 .form-group { margin-bottom: 15px; }
@@ -93,7 +92,6 @@ input, select, textarea{ width:100%; padding:14px; border:2px solid #f0f0f0; bor
 input:focus, select:focus, textarea:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(215, 25, 32, 0.05); }
 button.primary-btn{ width:100%; padding:15px; border:none; border-radius:12px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color:white; font-size:15px; font-weight: 700; cursor:pointer; box-shadow: 0 8px 20px rgba(215, 25, 32, 0.3); transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
 button.primary-btn:hover{ transform: translateY(-2px); }
-button.secondary-btn{ background: #6c757d; box-shadow: none; }
 button.danger-btn{ background: #dc3545; }
 
 /* DONOR & REQUEST CARDS */
@@ -130,7 +128,6 @@ button.danger-btn{ background: #dc3545; }
 .menu a i { margin-right: 15px; color: #aaa; width: 20px; font-size: 16px; }
 .menu a:hover { background: #fff5f5; color: var(--primary); }
 .menu a:hover i { color: var(--primary); }
-.menu a.active-link { background: #fff5f5; color: var(--primary); border-right: 4px solid var(--primary); }
 
 /* SPLASH SCREEN */
 #splash { height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; background: white; z-index: 1000; position: fixed; top: 0; left: 0; width: 100%; }
@@ -148,10 +145,11 @@ button.danger-btn{ background: #dc3545; }
 <!-- SPLASH SCREEN -->
 <div id="splash">
   <div class="splash-logo-container">
+    <!-- LOGO FIXED HERE -->
     <img src="https://z-cdn-media.chatglm.cn/files/3bd2ac78-e146-4d71-b99d-ac64f35f4bf9.jpg?auth_key=1871394197-effa948b636c4ab781ba1fcfe3fa18d2-0-dba95b4ab61b5cf4ea7d439516b245d9" class="splash-logo" alt="Logo">
   </div>
   <div class="splash-text">Sreenagar Rokter Bondhon</div>
-  <div class="splash-sub" style="font-size:12px; color:#999; margin-top:5px;">Admin Panel Integrated</div>
+  <div class="splash-sub" style="font-size:12px; color:#999; margin-top:5px;">Connecting Lives</div>
   <div class="loader"></div>
 </div>
 
@@ -161,6 +159,7 @@ button.danger-btn{ background: #dc3545; }
 <div class="header">
   <div class="header-left">
     <span class="menuBtn" onclick="toggleMenu()"><i class="fas fa-bars"></i></span>
+    <!-- LOGO FIXED HERE -->
     <img src="https://z-cdn-media.chatglm.cn/files/3bd2ac78-e146-4d71-b99d-ac64f35f4bf9.jpg?auth_key=1871394197-effa948b636c4ab781ba1fcfe3fa18d2-0-dba95b4ab61b5cf4ea7d439516b245d9" class="header-logo" alt="Logo">
   </div>
   <div style="text-align:right">
@@ -181,10 +180,7 @@ button.danger-btn{ background: #dc3545; }
   <a onclick="openPage('findDonor')"><i class="fas fa-search-location"></i> Find Donor</a>
   <a onclick="openPage('request')"><i class="fas fa-notes-medical"></i> Request Blood</a>
   <a onclick="openPage('beDonor')"><i class="fas fa-user-plus"></i> Register as Donor</a>
-  <a onclick="openPage('bloodInfo')"><i class="fas fa-tint"></i> Blood Group Info</a>
-  <a onclick="openPage('eligibility')"><i class="fas fa-clipboard-check"></i> Eligibility</a>
   <div style="border-top:1px solid #eee; margin:10px 0;"></div>
-  <!-- Admin Menu Item -->
   <a id="adminMenuLink" onclick="handleAdminClick()"><i class="fas fa-user-shield"></i> <span id="adminMenuText">Admin Panel</span></a>
 </div>
 
@@ -192,15 +188,11 @@ button.danger-btn{ background: #dc3545; }
 
 <!-- HOME PAGE -->
 <div id="home" class="container">
-  
-  <!-- Notice Board Section -->
   <div id="noticeArea"></div>
 
   <div class="card hero-card">
     <div class="card-title"><i class="fas fa-heartbeat"></i> Welcome</div>
-    <p style="font-size: 14px; color: #666; line-height: 1.6;">
-      Every drop counts. Join our mission to save lives.
-    </p>
+    <p style="font-size: 14px; color: #666; line-height: 1.6;">Every drop counts. Join our mission to save lives.</p>
     <div class="hero-stats">
       <div class="stat-item">
         <div class="stat-num" id="statDonors">-</div>
@@ -217,7 +209,6 @@ button.danger-btn{ background: #dc3545; }
     </div>
   </div>
 
-  <!-- Recent Requests -->
   <div class="card">
     <div class="card-title"><i class="fas fa-bell"></i> Recent Blood Requests</div>
     <div id="recentRequestsList"><p style="text-align:center; color:#888;">Loading...</p></div>
@@ -274,18 +265,9 @@ button.danger-btn{ background: #dc3545; }
   <div class="card">
     <div class="card-title"><i class="fas fa-clipboard-check"></i> Who Can Donate?</div>
     <ul class="check-list" style="list-style:none;">
-      <li><i class="fas fa-check" style="color:green; margin-right:10px;"></i> Age between 18-60 years.</li>
-      <li><i class="fas fa-check" style="color:green; margin-right:10px;"></i> Weight at least 45 kg.</li>
-      <li><i class="fas fa-check" style="color:green; margin-right:10px;"></i> Hemoglobin level normal.</li>
+      <li style="margin-bottom:10px;"><i class="fas fa-check" style="color:green; margin-right:10px;"></i> Age between 18-60 years.</li>
+      <li style="margin-bottom:10px;"><i class="fas fa-check" style="color:green; margin-right:10px;"></i> Weight at least 45 kg.</li>
     </ul>
-  </div>
-</div>
-
-<!-- BLOOD INFO PAGE -->
-<div id="bloodInfo" class="container hidden">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-tint"></i> Blood Compatibility</div>
-    <p style="font-size:13px; color:#666;">Information about blood groups will be here.</p>
   </div>
 </div>
 
@@ -317,25 +299,23 @@ button.danger-btn{ background: #dc3545; }
     <!-- Notice Posting Section -->
     <div style="background:#f9f9f9; padding:15px; border-radius:10px; margin-bottom:20px;">
       <h4 style="font-size:14px; margin-bottom:10px;">Post Public Notice</h4>
-      <textarea id="noticeText" placeholder="Write notice for home page..." style="height:80px; margin-bottom:10px;"></textarea>
+      <textarea id="noticeText" placeholder="Write notice for home page..." style="width:100%; height:80px; margin-bottom:10px; padding:10px; border:1px solid #ddd; border-radius:8px;"></textarea>
       <div style="display:flex; gap:10px;">
         <button class="primary-btn" style="padding:10px; font-size:13px;" onclick="postNotice()"><i class="fas fa-bullhorn"></i> Post Notice</button>
-        <button class="primary-btn danger-btn" style="padding:10px; font-size:13px; background:#dc3545;" onclick="deleteNotice()"><i class="fas fa-trash"></i> Remove</button>
+        <button class="primary-btn danger-btn" style="padding:10px; font-size:13px;" onclick="deleteNotice()"><i class="fas fa-trash"></i> Remove</button>
       </div>
     </div>
 
     <!-- Request Management Section -->
     <h4 style="margin-bottom:10px;">Manage Blood Requests</h4>
-    <div id="adminRequestList">
-        <!-- Admin requests will load here -->
-    </div>
+    <div id="adminRequestList"></div>
   </div>
 </div>
 
 </div>
 
 <div class="footer">
-  <div class="footer-left"><span class="dev-name">Developed by</span><span class="dev-comp">SRP SOFT LTD.</span></div>
+  <div class="footer-left"><span style="font-size:11px; color:#888;">Developed by</span><span style="font-size:13px; font-weight:700;">SRP SOFT LTD.</span></div>
   <div class="footer-right"><a href="tel:+8809697755193" class="hotline-link"><i class="fas fa-phone-alt"></i> Hotline</a></div>
 </div>
 
@@ -350,32 +330,36 @@ button.danger-btn{ background: #dc3545; }
 // ============ CONFIGURATION ============
 const SUPABASE_URL = 'https://qhftnurfbqdtkccffagm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnRudXJmYnFkdGtjY2ZmYWdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MTA0MjcsImV4cCI6MjA4NzQ4NjQyN30.pNEjziqmkIP5vIC7Iu2Qwkz25cysKHoVMXJme5ARwTE';
-const ADMIN_EMAIL = "admin@srb.com"; // আপনার ইমেইল
-const ADMIN_PASS = "srb@admin";      // আপনার পাসওয়ার্ড
+const ADMIN_EMAIL = "admin@srb.com";
+const ADMIN_PASS = "srb@admin";
 const EMAILJS_PUBLIC_KEY = "tTDL_g9ChY2fiUl4t";
 const EMAILJS_SERVICE_ID = "service_rka3imy";
 const EMAILJS_TEMPLATE_ID = "template_5j956tn";
 
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Initialize Supabase
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Initialize EmailJS
 if(typeof emailjs !== 'undefined'){ emailjs.init(EMAILJS_PUBLIC_KEY); }
 
 let isAdminLoggedIn = false;
 
 // ============ APP INITIALIZATION ============
-setTimeout(()=>{
-  document.getElementById("splash").style.display="none";
-  document.getElementById("app").classList.remove("hidden");
-  
-  // Check if Admin is already logged in (using sessionStorage)
-  if(sessionStorage.getItem('srb_admin') === 'true') {
-      isAdminLoggedIn = true;
-      updateAdminUI();
-  }
-  
-  loadStats();
-  loadRecentRequests();
-  loadNotices();
-}, 2500);
+window.onload = function() {
+    setTimeout(()=>{
+      document.getElementById("splash").style.display="none";
+      document.getElementById("app").classList.remove("hidden");
+      
+      if(sessionStorage.getItem('srb_admin') === 'true') {
+          isAdminLoggedIn = true;
+          updateAdminUI();
+      }
+      
+      loadStats();
+      loadRecentRequests();
+      loadNotices();
+    }, 2500);
+};
 
 // ============ NAVIGATION ============
 function toggleMenu(){
@@ -386,7 +370,7 @@ function toggleMenu(){
 }
 
 function hidePages(){
-  const pages = ["home", "findDonor", "request", "beDonor", "bloodInfo", "eligibility", "about", "adminLogin", "adminPanel"];
+  const pages = ["home", "findDonor", "request", "beDonor", "eligibility", "adminLogin", "adminPanel"];
   pages.forEach(id=> document.getElementById(id).classList.add("hidden"));
 }
 
@@ -396,7 +380,6 @@ function openPage(id){
   window.scrollTo(0, 0);
   if(document.getElementById("menu").classList.contains("active")) toggleMenu();
   
-  // If opening admin panel, load data
   if(id === 'adminPanel') loadAdminRequests();
 }
 
@@ -407,7 +390,7 @@ function handleAdminClick() {
     } else {
         openPage('adminLogin');
     }
-    toggleMenu(); // Close menu after click
+    toggleMenu();
 }
 
 function attemptLogin() {
@@ -416,9 +399,10 @@ function attemptLogin() {
     
     if(email === ADMIN_EMAIL && pass === ADMIN_PASS) {
         isAdminLoggedIn = true;
-        sessionStorage.setItem('srb_admin', 'true'); // Session storage
+        sessionStorage.setItem('srb_admin', 'true');
         updateAdminUI();
         openPage('adminPanel');
+        document.getElementById('loginError').style.display = 'none';
     } else {
         document.getElementById('loginError').style.display = 'block';
     }
@@ -433,22 +417,17 @@ function logoutAdmin() {
 
 function updateAdminUI() {
     const menuText = document.getElementById('adminMenuText');
-    if(isAdminLoggedIn) {
-        menuText.innerText = "Admin Dashboard";
-    } else {
-        menuText.innerText = "Admin Panel";
-    }
+    menuText.innerText = isAdminLoggedIn ? "Admin Dashboard" : "Admin Panel";
 }
 
 // ============ ADMIN ACTIONS ============
 
-// 1. Load Requests for Admin Panel
 async function loadAdminRequests() {
     const container = document.getElementById('adminRequestList');
     container.innerHTML = "<div class='loader' style='margin:20px auto;'></div>";
     
     try {
-        const { data, error } = await supabaseClient
+        const { data, error } = await supabase
             .from('requests')
             .select('*')
             .order('created_at', { ascending: false });
@@ -462,14 +441,13 @@ async function loadAdminRequests() {
         
         container.innerHTML = "";
         data.forEach(req => {
-            const html = `
+            container.innerHTML += `
                 <div class="donor-card ${req.is_solved ? 'solved' : ''}" style="flex-wrap:wrap;">
                     <div class="donor-avatar">${req.blood_group}</div>
                     <div class="donor-info" style="flex:1; min-width:150px;">
                         <h4>${req.patient_name} ${req.is_solved ? '<span style="color:green; font-size:10px;">(SOLVED)</span>' : ''}</h4>
                         <p><i class="fas fa-map-marker-alt"></i> ${req.location}</p>
                         <p><i class="fas fa-phone"></i> ${req.contact}</p>
-                        <p><i class="fas fa-calendar"></i> ${req.required_date}</p>
                     </div>
                     <div class="admin-actions">
                         <button class="btn-solve" onclick="toggleSolved('${req.id}', ${req.is_solved})"><i class="fas fa-check"></i></button>
@@ -477,37 +455,34 @@ async function loadAdminRequests() {
                     </div>
                 </div>
             `;
-            container.innerHTML += html;
         });
         
     } catch(e) {
         console.error(e);
-        container.innerHTML = "<p style='color:red; text-align:center;'>Error loading data.</p>";
+        container.innerHTML = "<p style='color:red; text-align:center;'>Error loading data. Check console & SQL setup.</p>";
     }
 }
 
-// 2. Toggle Solved Status
 async function toggleSolved(id, currentStatus) {
     try {
-        const { error } = await supabaseClient
+        const { error } = await supabase
             .from('requests')
             .update({ is_solved: !currentStatus })
             .eq('id', id);
             
         if(error) throw error;
-        loadAdminRequests(); // Reload list
-        loadRecentRequests(); // Update home page
-        loadStats(); // Update counts
+        loadAdminRequests();
+        loadRecentRequests();
+        loadStats();
     } catch(e) {
         alert("Error updating status");
     }
 }
 
-// 3. Delete Request
 async function deleteRequest(id) {
     if(confirm("Are you sure you want to delete this request?")) {
         try {
-            const { error } = await supabaseClient
+            const { error } = await supabase
                 .from('requests')
                 .delete()
                 .eq('id', id);
@@ -522,17 +497,13 @@ async function deleteRequest(id) {
     }
 }
 
-// 4. Post Notice
 async function postNotice() {
     const text = document.getElementById('noticeText').value;
     if(!text) return;
     
     try {
-        // Delete old notices first (keep only 1 latest)
-        await supabaseClient.from('notices').delete().neq('id', 0);
-        
-        // Insert new
-        const { error } = await supabaseClient
+        await supabase.from('notices').delete().neq('id', 0);
+        const { error } = await supabase
             .from('notices')
             .insert([{ content: text }]);
             
@@ -542,14 +513,14 @@ async function postNotice() {
         document.getElementById('noticeText').value = "";
         loadNotices();
     } catch(e) {
-        alert("Error posting notice");
+        console.error(e);
+        alert("Error posting notice. Did you run the SQL setup?");
     }
 }
 
-// 5. Delete Notice
 async function deleteNotice() {
     try {
-        await supabaseClient.from('notices').delete().neq('id', 0);
+        await supabase.from('notices').delete().neq('id', 0);
         loadNotices();
     } catch(e) {}
 }
@@ -557,20 +528,21 @@ async function deleteNotice() {
 // ============ PUBLIC DATA LOADERS ============
 
 async function loadStats() {
-    // Count Donors
-    const { count: dCount } = await supabaseClient.from('donors').select('*', { count: 'exact', head: true });
-    document.getElementById('statDonors').innerText = (dCount || 0) + '+';
-    
-    // Count Pending Requests (is_solved = false)
-    const { count: rCount } = await supabaseClient.from('requests').select('*', { count: 'exact', head: true }).eq('is_solved', false);
-    document.getElementById('statRequests').innerText = (rCount || 0) + '+';
+    try {
+        const { count: dCount } = await supabase.from('donors').select('*', { count: 'exact', head: true });
+        document.getElementById('statDonors').innerText = (dCount || 0) + '+';
+        
+        const { count: rCount } = await supabase.from('requests').select('*', { count: 'exact', head: true }).eq('is_solved', false);
+        document.getElementById('statRequests').innerText = (rCount || 0) + '+';
+    } catch(e) {
+        console.error("Stats Error", e);
+    }
 }
 
 async function loadRecentRequests() {
     const container = document.getElementById('recentRequestsList');
     try {
-        // Only show unsolved requests
-        const { data, error } = await supabaseClient
+        const { data, error } = await supabase
             .from('requests')
             .select('*')
             .eq('is_solved', false)
@@ -586,18 +558,16 @@ async function loadRecentRequests() {
         }
 
         data.forEach(req => {
-            const html = `
+            container.innerHTML += `
                 <div class="donor-card urgent-card">
                     <div class="donor-avatar">${req.blood_group}</div>
                     <div class="donor-info">
                         <h4>${req.patient_name}</h4>
                         <p><i class="fas fa-hospital"></i> ${req.location}</p>
-                        <p><i class="fas fa-calendar"></i> Need: ${req.required_date}</p>
                     </div>
                     <a href="tel:${req.contact}" class="donor-call-btn"><i class="fas fa-phone-alt"></i></a>
                 </div>
             `;
-            container.innerHTML += html;
         });
     } catch(e) {
         container.innerHTML = "<p style='color:red; text-align:center;'>Error loading requests.</p>";
@@ -607,7 +577,7 @@ async function loadRecentRequests() {
 async function loadNotices() {
     const area = document.getElementById('noticeArea');
     try {
-        const { data, error } = await supabaseClient
+        const { data, error } = await supabase
             .from('notices')
             .select('*')
             .limit(1);
@@ -625,7 +595,7 @@ async function loadNotices() {
             area.innerHTML = "";
         }
     } catch(e) {
-        console.error("Notice load error", e);
+        console.error("Notice Error", e);
     }
 }
 
@@ -644,7 +614,7 @@ async function registerDonor() {
     btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Saving...";
 
     try {
-        const { error } = await supabaseClient.from('donors').insert([{ name, blood, phone, location }]);
+        const { error } = await supabase.from('donors').insert([{ name, blood, phone, location }]);
         if (error) throw error;
         
         alert("Success! You are now registered.");
@@ -676,12 +646,11 @@ async function submitBloodRequest() {
     btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Posting...";
 
     try {
-        const { error } = await supabaseClient.from('requests').insert([{
+        const { error } = await supabase.from('requests').insert([{
             patient_name: patient, blood_group: blood, location, contact, required_date: date
         }]);
         if (error) throw error;
 
-        // Send Email
         const templateParams = { to_email: "omorhosshin@gmail.com", subject: "New Blood Request", message: `Patient: ${patient}\nBlood: ${blood}\nLoc: ${location}\nContact: ${contact}` };
         emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
 
@@ -712,7 +681,7 @@ async function filterDonors() {
     container.innerHTML = `<div class="loader" style="margin:20px auto;"></div>`;
 
     try {
-        const { data, error } = await supabaseClient.from('donors').select('*').eq('blood', selectedBlood);
+        const { data, error } = await supabase.from('donors').select('*').eq('blood', selectedBlood);
         if (error) throw error;
 
         container.innerHTML = "";
