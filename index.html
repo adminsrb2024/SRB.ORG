@@ -23,7 +23,6 @@ body{background:var(--bg);padding-bottom:90px; color: var(--text);}
 
 /* ANIMATIONS */
 @keyframes fadeIn { from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:translateY(0)} }
-@keyframes slideIn { from{transform:translateX(-100%)} to{transform:translateX(0)} }
 @keyframes pulse { 0%{transform:scale(1); box-shadow:0 0 0 0 rgba(215, 25, 32, 0.4)} 70%{transform:scale(1.05); box-shadow:0 0 0 10px rgba(215, 25, 32, 0)} 100%{transform:scale(1)} }
 
 /* HEADER */
@@ -42,8 +41,7 @@ body{background:var(--bg);padding-bottom:90px; color: var(--text);}
 }
 .header-left { display: flex; align-items: center; gap: 12px; }
 .menuBtn{ font-size:22px; cursor:pointer; transition: 0.3s; padding: 5px; }
-.menuBtn:hover { transform: scale(1.1); }
-.header-logo{ width: 42px; height: 42px; object-fit: cover; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+.header-logo{ width: 42px; height: 42px; object-fit: cover; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); }
 .header-title { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
 .header-subtitle { font-size: 10px; opacity: 0.9; font-weight: 400; }
 
@@ -72,231 +70,77 @@ body{background:var(--bg);padding-bottom:90px; color: var(--text);}
 }
 .card-title i { color: var(--primary); }
 
-/* HERO SECTION */
-.hero-card {
-  background: linear-gradient(135deg, #fff 0%, #fff5f5 100%);
-  border-left: 5px solid var(--primary);
-  position: relative;
-  overflow: hidden;
-}
-.hero-card::after {
-  content: "\f055";
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  position: absolute;
-  right: -10px;
-  bottom: -10px;
-  font-size: 100px;
-  color: rgba(215, 25, 32, 0.05);
-}
-.hero-stats {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px dashed #eee;
-}
+/* HERO & STATS */
+.hero-card { background: linear-gradient(135deg, #fff 0%, #fff5f5 100%); border-left: 5px solid var(--primary); }
+.hero-stats { display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #eee; }
 .stat-item { text-align: center; }
 .stat-num { font-size: 20px; font-weight: 800; color: var(--primary); }
 .stat-label { font-size: 10px; color: var(--text-light); text-transform: uppercase; }
 
 /* GRID DASHBOARD */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-.dash-card {
-  background: white;
-  padding: 18px 15px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  transition: 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-.dash-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-.dash-card:active { transform: scale(0.98); }
-.dash-icon {
-  width: 45px;
-  height: 45px;
-  background: var(--primary-light);
-  color: var(--primary);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  margin: 0 auto 10px;
-  transition: 0.3s;
-}
+.dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.dash-card { background: white; padding: 18px 15px; border-radius: 16px; text-align: center; box-shadow: var(--shadow); cursor: pointer; transition: 0.3s; }
+.dash-card:hover { transform: translateY(-3px); }
+.dash-icon { width: 45px; height: 45px; background: var(--primary-light); color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin: 0 auto 10px; transition: 0.3s; }
 .dash-card:hover .dash-icon { background: var(--primary); color: white; }
 .dash-title { font-weight: 600; font-size: 14px; color: var(--text); }
 .dash-desc { font-size: 10px; color: var(--text-light); margin-top: 3px; }
 
 /* FORMS */
 .form-group { margin-bottom: 15px; }
-.form-label { display: block; margin-bottom: 6px; font-size: 12px; color: var(--text-light); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-input, select, textarea{
-  width:100%;
-  padding:14px;
-  border:2px solid #f0f0f0;
-  border-radius:10px;
-  transition: 0.3s;
-  background: #fafafa;
-  font-size: 14px;
-  color: var(--text);
-}
-input:focus, select:focus, textarea:focus {
-  border-color: var(--primary);
-  background: white;
-  box-shadow: 0 0 0 4px rgba(215, 25, 32, 0.05);
-}
-button.primary-btn{
-  width:100%;
-  padding:15px;
-  border:none;
-  border-radius:12px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color:white;
-  font-size:15px;
-  font-weight: 700;
-  cursor:pointer;
-  box-shadow: 0 8px 20px rgba(215, 25, 32, 0.3);
-  transition: 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-button.primary-btn:hover{ transform: translateY(-2px); box-shadow: 0 10px 25px rgba(215, 25, 32, 0.4); }
-button.primary-btn:active { transform: translateY(0); }
+.form-label { display: block; margin-bottom: 6px; font-size: 12px; color: var(--text-light); font-weight: 600; }
+input, select, textarea{ width:100%; padding:14px; border:2px solid #f0f0f0; border-radius:10px; transition: 0.3s; background: #fafafa; font-size: 14px; color: var(--text); }
+input:focus, select:focus, textarea:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(215, 25, 32, 0.05); }
+button.primary-btn{ width:100%; padding:15px; border:none; border-radius:12px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color:white; font-size:15px; font-weight: 700; cursor:pointer; box-shadow: 0 8px 20px rgba(215, 25, 32, 0.3); transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+button.primary-btn:hover{ transform: translateY(-2px); }
+button.secondary-btn{ background: #6c757d; box-shadow: none; }
+button.danger-btn{ background: #dc3545; }
 
-/* DONOR & REQUEST CARD STYLE */
-.donor-card {
-  display: flex;
-  align-items: center;
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  border: 1px solid #eee;
-  transition: 0.3s;
-}
-.donor-card:hover { border-color: var(--primary); }
-/* Urgent Request Specific Style */
-.urgent-card {
-  border-left: 4px solid var(--primary);
-  background: #fffafa;
-}
-.donor-avatar {
-  width: 50px;
-  height: 50px;
-  background: var(--primary-light);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--primary);
-  font-weight: 800;
-  font-size: 16px;
-  margin-right: 15px;
-  border: 2px solid white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.urgent-card .donor-avatar {
-  background: var(--primary);
-  color: white;
-}
+/* DONOR & REQUEST CARDS */
+.donor-card { display: flex; align-items: center; background: white; padding: 15px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #eee; transition: 0.3s; }
+.donor-card.solved { opacity: 0.6; background: #f9f9f9; text-decoration: line-through; }
+.donor-card.urgent-card { border-left: 4px solid var(--primary); background: #fffafa; }
+.donor-avatar { width: 50px; height: 50px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 800; font-size: 16px; margin-right: 15px; border: 2px solid white; }
+.urgent-card .donor-avatar { background: var(--primary); color: white; }
 .donor-info h4 { font-size: 15px; margin-bottom: 4px; color: var(--text); }
 .donor-info p { font-size: 12px; color: var(--text-light); display: flex; align-items: center; gap: 4px; }
-.donor-call-btn {
-  margin-left: auto;
-  background: #25D366;
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  font-size: 18px;
-  box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3);
-}
+.donor-call-btn { margin-left: auto; background: #25D366; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 18px; box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3); }
 
-/* INFO TABLE */
-.info-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-.info-table th, .info-table td { padding: 12px; text-align: left; border-bottom: 1px solid #f0f0f0; }
-.info-table th { background: #fafafa; color: var(--text); font-weight: 600; }
-.badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 11px; background: var(--primary-light); color: var(--primary); }
+/* NOTICE BOARD */
+.notice-board { background: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+.notice-board h4 { color: #856404; margin-bottom: 5px; font-size: 14px; display: flex; align-items: center; gap: 5px; }
+.notice-board p { font-size: 13px; color: #856404; }
 
-/* ELIGIBILITY LIST */
-.check-list { list-style: none; }
-.check-list li { display: flex; align-items: flex-start; margin-bottom: 12px; font-size: 13px; color: var(--text-light); line-height: 1.5; }
-.check-list li i { color: #25D366; margin-right: 10px; margin-top: 3px; font-size: 12px; }
-.fail-list li i { color: var(--primary); }
+/* ADMIN ACTION BUTTONS */
+.admin-actions { display: flex; gap: 8px; margin-left: auto; }
+.admin-actions button { width: 35px; height: 35px; border-radius: 8px; border: none; color: white; cursor: pointer; font-size: 14px; }
+.btn-solve { background: #28a745; }
+.btn-delete { background: #dc3545; }
 
 /* FOOTER */
-.footer{
-  position:fixed; bottom:0; left:0;
-  width:100%; background: white;
-  text-align:center;
-  padding:12px 20px;
-  border-top: 1px solid #eee;
-  box-shadow: 0 -5px 20px rgba(0,0,0,0.03);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 99;
-}
-.footer-left { text-align: left; }
-.footer-right { text-align: right; }
-.footer span { display: block; }
-.dev-name { font-size: 11px; color: var(--text-light); font-weight: 500; }
-.dev-comp { font-size: 13px; color: var(--text); font-weight: 700; }
-.hotline-link {
-  background: var(--primary);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
+.footer{ position:fixed; bottom:0; left:0; width:100%; background: white; text-align:center; padding:12px 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; z-index: 99; }
+.hotline-link { background: var(--primary); color: white; padding: 6px 12px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; }
 
-/* MENU OVERLAY */
+/* MENU & OVERLAY */
 .overlay{ position:fixed; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:998; display:none; backdrop-filter: blur(3px); }
-
-/* DRAWER */
 .menu{ position:fixed; left:-300px; top:0; width:280px; height:100%; background:white; transition:.3s ease-in-out; z-index:999; box-shadow: 5px 0 30px rgba(0,0,0,0.1); }
 .menu.active{left:0}
 .menu-header { background: var(--primary); color: white; padding: 30px 20px; margin-bottom: 10px; }
-.menu-header h3 { font-size: 20px; font-weight: 700; }
-.menu-header p { font-size: 12px; opacity: 0.9; margin-top: 5px; }
 .menu a{ display:flex; align-items: center; padding:16px 25px; color:#444; text-decoration:none; transition: 0.2s; font-weight: 500; font-size: 14px; }
 .menu a i { margin-right: 15px; color: #aaa; width: 20px; font-size: 16px; }
 .menu a:hover { background: #fff5f5; color: var(--primary); }
 .menu a:hover i { color: var(--primary); }
+.menu a.active-link { background: #fff5f5; color: var(--primary); border-right: 4px solid var(--primary); }
 
 /* SPLASH SCREEN */
 #splash { height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; background: white; z-index: 1000; position: fixed; top: 0; left: 0; width: 100%; }
 .splash-logo-container { width: 130px; height: 130px; border-radius: 50%; background: white; padding: 5px; box-shadow: 0 10px 40px rgba(215, 25, 32, 0.3); margin-bottom: 25px; animation: pulse 2s infinite; }
 .splash-logo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .splash-text { font-size: 22px; color: var(--primary); font-weight: 800; letter-spacing: -0.5px; }
-.splash-sub { font-size: 12px; color: var(--text-light); margin-top: 5px; margin-bottom: 30px; }
 .loader { width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* UTILITY */
 .hidden {display:none}
-.mb-10 { margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -307,7 +151,7 @@ button.primary-btn:active { transform: translateY(0); }
     <img src="https://z-cdn-media.chatglm.cn/files/3bd2ac78-e146-4d71-b99d-ac64f35f4bf9.jpg?auth_key=1871394197-effa948b636c4ab781ba1fcfe3fa18d2-0-dba95b4ab61b5cf4ea7d439516b245d9" class="splash-logo" alt="Logo">
   </div>
   <div class="splash-text">Sreenagar Rokter Bondhon</div>
-  <div class="splash-sub">Connecting Lives</div>
+  <div class="splash-sub" style="font-size:12px; color:#999; margin-top:5px;">Admin Panel Integrated</div>
   <div class="loader"></div>
 </div>
 
@@ -339,19 +183,23 @@ button.primary-btn:active { transform: translateY(0); }
   <a onclick="openPage('beDonor')"><i class="fas fa-user-plus"></i> Register as Donor</a>
   <a onclick="openPage('bloodInfo')"><i class="fas fa-tint"></i> Blood Group Info</a>
   <a onclick="openPage('eligibility')"><i class="fas fa-clipboard-check"></i> Eligibility</a>
-  <a onclick="openPage('about')"><i class="fas fa-info-circle"></i> About Us</a>
   <div style="border-top:1px solid #eee; margin:10px 0;"></div>
-  <a href="https://facebook.com/groups/776274101742103/" target="_blank"><i class="fab fa-facebook"></i> Join Community</a>
+  <!-- Admin Menu Item -->
+  <a id="adminMenuLink" onclick="handleAdminClick()"><i class="fas fa-user-shield"></i> <span id="adminMenuText">Admin Panel</span></a>
 </div>
 
 <div class="main-container">
 
 <!-- HOME PAGE -->
 <div id="home" class="container">
+  
+  <!-- Notice Board Section -->
+  <div id="noticeArea"></div>
+
   <div class="card hero-card">
     <div class="card-title"><i class="fas fa-heartbeat"></i> Welcome</div>
     <p style="font-size: 14px; color: #666; line-height: 1.6;">
-      Every drop counts. Join our mission to save lives by donating blood today.
+      Every drop counts. Join our mission to save lives.
     </p>
     <div class="hero-stats">
       <div class="stat-item">
@@ -369,35 +217,17 @@ button.primary-btn:active { transform: translateY(0); }
     </div>
   </div>
 
-  <!-- Recent Blood Requests Section (NEW) -->
+  <!-- Recent Requests -->
   <div class="card">
     <div class="card-title"><i class="fas fa-bell"></i> Recent Blood Requests</div>
-    <div id="recentRequestsList">
-        <p style="text-align:center; color:#888; font-size:13px;">Loading requests...</p>
-    </div>
+    <div id="recentRequestsList"><p style="text-align:center; color:#888;">Loading...</p></div>
   </div>
 
   <div class="dashboard-grid">
-    <div class="dash-card" onclick="openPage('findDonor')">
-      <div class="dash-icon"><i class="fas fa-search"></i></div>
-      <div class="dash-title">Find Donor</div>
-      <div class="dash-desc">Search nearby</div>
-    </div>
-    <div class="dash-card" onclick="openPage('request')">
-      <div class="dash-icon"><i class="fas fa-ambulance"></i></div>
-      <div class="dash-title">Request Blood</div>
-      <div class="dash-desc">Urgent need</div>
-    </div>
-    <div class="dash-card" onclick="openPage('beDonor')">
-      <div class="dash-icon"><i class="fas fa-user-plus"></i></div>
-      <div class="dash-title">Be a Donor</div>
-      <div class="dash-desc">Join us</div>
-    </div>
-    <div class="dash-card" onclick="openPage('eligibility')">
-      <div class="dash-icon"><i class="fas fa-clipboard-list"></i></div>
-      <div class="dash-title">Eligibility</div>
-      <div class="dash-desc">Check now</div>
-    </div>
+    <div class="dash-card" onclick="openPage('findDonor')"><div class="dash-icon"><i class="fas fa-search"></i></div><div class="dash-title">Find Donor</div></div>
+    <div class="dash-card" onclick="openPage('request')"><div class="dash-icon"><i class="fas fa-ambulance"></i></div><div class="dash-title">Request Blood</div></div>
+    <div class="dash-card" onclick="openPage('beDonor')"><div class="dash-icon"><i class="fas fa-user-plus"></i></div><div class="dash-title">Be a Donor</div></div>
+    <div class="dash-card" onclick="openPage('eligibility')"><div class="dash-icon"><i class="fas fa-clipboard-list"></i></div><div class="dash-title">Eligibility</div></div>
   </div>
 </div>
 
@@ -407,52 +237,22 @@ button.primary-btn:active { transform: translateY(0); }
     <div class="card-title"><i class="fas fa-search"></i> Search Blood Group</div>
     <select id="searchBlood" onchange="filterDonors()" class="mb-10">
       <option value="">-- Select Blood Group --</option>
-      <option value="A+">A+</option>
-      <option value="A-">A-</option>
-      <option value="B+">B+</option>
-      <option value="B-">B-</option>
-      <option value="O+">O+</option>
-      <option value="O-">O-</option>
-      <option value="AB+">AB+</option>
-      <option value="AB-">AB-</option>
+      <option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option>
+      <option value="O+">O+</option><option value="O-">O-</option><option value="AB+">AB+</option><option value="AB-">AB-</option>
     </select>
   </div>
-  <div id="donorListContainer">
-    <div class="card" style="text-align: center; color: #888; border: 1px dashed #ccc;">
-      <i class="fas fa-users" style="font-size: 40px; margin-bottom: 10px; display:block;"></i>
-      <p>Select a blood group above to see available donors.</p>
-    </div>
-  </div>
+  <div id="donorListContainer"></div>
 </div>
 
 <!-- REQUEST BLOOD PAGE -->
 <div id="request" class="container hidden">
   <div class="card">
     <div class="card-title"><i class="fas fa-notes-medical"></i> Post Blood Request</div>
-    <p style="font-size:12px; color:#999; margin-bottom:15px;">This request will be public on the home page.</p>
-    <div class="form-group">
-      <label class="form-label">Patient Name</label>
-      <input id="patient" placeholder="Full Name">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Blood Group Needed</label>
-      <select id="reqBlood">
-        <option>A+</option><option>B+</option><option>O+</option><option>AB+</option>
-        <option>A-</option><option>B-</option><option>O-</option><option>AB-</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Hospital / Location</label>
-      <input id="location" placeholder="e.g., Dhaka Medical">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Contact Number</label>
-      <input id="reqContact" type="tel" placeholder="01XXXXXXXXX">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Required Date</label>
-      <input id="reqDate" type="date">
-    </div>
+    <div class="form-group"><label class="form-label">Patient Name</label><input id="patient" placeholder="Full Name"></div>
+    <div class="form-group"><label class="form-label">Blood Group</label><select id="reqBlood"><option>A+</option><option>B+</option><option>O+</option><option>AB+</option><option>A-</option><option>B-</option><option>O-</option><option>AB-</option></select></div>
+    <div class="form-group"><label class="form-label">Hospital / Location</label><input id="location" placeholder="e.g., Dhaka Medical"></div>
+    <div class="form-group"><label class="form-label">Contact Number</label><input id="reqContact" type="tel" placeholder="01XXXXXXXXX"></div>
+    <div class="form-group"><label class="form-label">Required Date</label><input id="reqDate" type="date"></div>
     <button class="primary-btn" onclick="submitBloodRequest()"><i class="fas fa-paper-plane"></i> Submit Request</button>
   </div>
 </div>
@@ -461,26 +261,10 @@ button.primary-btn:active { transform: translateY(0); }
 <div id="beDonor" class="container hidden">
   <div class="card">
     <div class="card-title"><i class="fas fa-user-plus"></i> Register as Donor</div>
-    <p style="font-size:12px; color:green; margin-bottom:15px;"><i class="fas fa-info-circle"></i> Your information will be saved to our online database.</p>
-    <div class="form-group">
-      <label class="form-label">Full Name</label>
-      <input id="donorName" placeholder="Your Name">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Blood Group</label>
-      <select id="donorBlood">
-        <option>A+</option><option>B+</option><option>O+</option><option>AB+</option>
-        <option>A-</option><option>B-</option><option>O-</option><option>AB-</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Mobile Number</label>
-      <input id="donorPhone" type="tel" placeholder="01XXXXXXXXX">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Location</label>
-      <input id="donorLocation" placeholder="Village/Area Name">
-    </div>
+    <div class="form-group"><label class="form-label">Full Name</label><input id="donorName" placeholder="Your Name"></div>
+    <div class="form-group"><label class="form-label">Blood Group</label><select id="donorBlood"><option>A+</option><option>B+</option><option>O+</option><option>AB+</option><option>A-</option><option>B-</option><option>O-</option><option>AB-</option></select></div>
+    <div class="form-group"><label class="form-label">Mobile Number</label><input id="donorPhone" type="tel" placeholder="01XXXXXXXXX"></div>
+    <div class="form-group"><label class="form-label">Location</label><input id="donorLocation" placeholder="Village/Area Name"></div>
     <button class="primary-btn" onclick="registerDonor()"><i class="fas fa-check-circle"></i> Register Now</button>
   </div>
 </div>
@@ -489,15 +273,10 @@ button.primary-btn:active { transform: translateY(0); }
 <div id="eligibility" class="container hidden">
   <div class="card">
     <div class="card-title"><i class="fas fa-clipboard-check"></i> Who Can Donate?</div>
-    <h4 style="color:#28a745; font-size:14px; margin-bottom:10px;"><i class="fas fa-check"></i> You CAN Donate If:</h4>
-    <ul class="check-list">
-      <li><i class="fas fa-check"></i> You are between 18-60 years old.</li>
-      <li><i class="fas fa-check"></i> Your weight is at least 45 kg.</li>
-    </ul>
-    <div style="height:1px; background:#eee; margin:15px 0;"></div>
-    <h4 style="color:var(--primary); font-size:14px; margin-bottom:10px;"><i class="fas fa-times"></i> You CANNOT Donate If:</h4>
-    <ul class="check-list fail-list">
-      <li><i class="fas fa-times"></i> You have cold, flu, or fever.</li>
+    <ul class="check-list" style="list-style:none;">
+      <li><i class="fas fa-check" style="color:green; margin-right:10px;"></i> Age between 18-60 years.</li>
+      <li><i class="fas fa-check" style="color:green; margin-right:10px;"></i> Weight at least 45 kg.</li>
+      <li><i class="fas fa-check" style="color:green; margin-right:10px;"></i> Hemoglobin level normal.</li>
     </ul>
   </div>
 </div>
@@ -506,40 +285,58 @@ button.primary-btn:active { transform: translateY(0); }
 <div id="bloodInfo" class="container hidden">
   <div class="card">
     <div class="card-title"><i class="fas fa-tint"></i> Blood Compatibility</div>
-    <table class="info-table">
-      <thead>
-        <tr><th>Group</th><th>Donate To</th><th>Receive From</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><span class="badge">A+</span></td><td>A+, AB+</td><td>A+, A-, O+, O-</td></tr>
-        <tr><td><span class="badge">O-</span></td><td>ALL</td><td>O-</td></tr>
-      </tbody>
-    </table>
+    <p style="font-size:13px; color:#666;">Information about blood groups will be here.</p>
   </div>
 </div>
 
-<!-- ABOUT PAGE -->
-<div id="about" class="container hidden">
+<!-- ADMIN LOGIN PAGE -->
+<div id="adminLogin" class="container hidden">
   <div class="card">
-    <div class="card-title"><i class="fas fa-users"></i> About Organization</div>
-    <p style="color:#555; line-height:1.6; font-size: 13px;">
-      <strong>Sreenagar Rokter Bondhon</strong> is a voluntary blood donation organization.
-    </p>
+    <div class="card-title"><i class="fas fa-lock"></i> Admin Login</div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input type="email" id="adminEmail" placeholder="admin@srb.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" id="adminPass" placeholder="Password">
+    </div>
+    <button class="primary-btn" onclick="attemptLogin()"><i class="fas fa-sign-in-alt"></i> Login</button>
+    <p id="loginError" style="color:red; text-align:center; margin-top:10px; display:none;">Invalid Credentials</p>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD PAGE -->
+<div id="adminPanel" class="container hidden">
+  <div class="card">
+    <div class="card-title" style="justify-content:space-between;">
+      <span><i class="fas fa-user-shield"></i> Admin Dashboard</span>
+      <button onclick="logoutAdmin()" style="background:#ddd; border:none; padding:5px 10px; border-radius:5px; cursor:pointer; font-size:12px;">Logout</button>
+    </div>
+    
+    <!-- Notice Posting Section -->
+    <div style="background:#f9f9f9; padding:15px; border-radius:10px; margin-bottom:20px;">
+      <h4 style="font-size:14px; margin-bottom:10px;">Post Public Notice</h4>
+      <textarea id="noticeText" placeholder="Write notice for home page..." style="height:80px; margin-bottom:10px;"></textarea>
+      <div style="display:flex; gap:10px;">
+        <button class="primary-btn" style="padding:10px; font-size:13px;" onclick="postNotice()"><i class="fas fa-bullhorn"></i> Post Notice</button>
+        <button class="primary-btn danger-btn" style="padding:10px; font-size:13px; background:#dc3545;" onclick="deleteNotice()"><i class="fas fa-trash"></i> Remove</button>
+      </div>
+    </div>
+
+    <!-- Request Management Section -->
+    <h4 style="margin-bottom:10px;">Manage Blood Requests</h4>
+    <div id="adminRequestList">
+        <!-- Admin requests will load here -->
+    </div>
   </div>
 </div>
 
 </div>
 
 <div class="footer">
-  <div class="footer-left">
-    <span class="dev-name">Developed by</span>
-    <span class="dev-comp">SRP SOFT LTD.</span>
-  </div>
-  <div class="footer-right">
-    <a href="tel:+8809697755193" class="hotline-link">
-      <i class="fas fa-phone-alt"></i> Hotline
-    </a>
-  </div>
+  <div class="footer-left"><span class="dev-name">Developed by</span><span class="dev-comp">SRP SOFT LTD.</span></div>
+  <div class="footer-right"><a href="tel:+8809697755193" class="hotline-link"><i class="fas fa-phone-alt"></i> Hotline</a></div>
 </div>
 
 </div>
@@ -550,63 +347,235 @@ button.primary-btn:active { transform: translateY(0); }
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
-// ==========================================
-// CONFIGURATION SECTION
-// ==========================================
-
+// ============ CONFIGURATION ============
 const SUPABASE_URL = 'https://qhftnurfbqdtkccffagm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnRudXJmYnFkdGtjY2ZmYWdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MTA0MjcsImV4cCI6MjA4NzQ4NjQyN30.pNEjziqmkIP5vIC7Iu2Qwkz25cysKHoVMXJme5ARwTE';
-
-const ADMIN_EMAIL = "omorhosshin@gmail.com";
+const ADMIN_EMAIL = "admin@srb.com"; // আপনার ইমেইল
+const ADMIN_PASS = "srb@admin";      // আপনার পাসওয়ার্ড
 const EMAILJS_PUBLIC_KEY = "tTDL_g9ChY2fiUl4t";
 const EMAILJS_SERVICE_ID = "service_rka3imy";
 const EMAILJS_TEMPLATE_ID = "template_5j956tn";
 
-// Initialize Clients
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 if(typeof emailjs !== 'undefined'){ emailjs.init(EMAILJS_PUBLIC_KEY); }
 
-// ==========================================
-// APP LOGIC
-// ==========================================
+let isAdminLoggedIn = false;
 
-// Splash Screen
+// ============ APP INITIALIZATION ============
 setTimeout(()=>{
   document.getElementById("splash").style.display="none";
   document.getElementById("app").classList.remove("hidden");
-  updateDonorCount();
-  loadRecentRequests(); // Load requests on startup
+  
+  // Check if Admin is already logged in (using sessionStorage)
+  if(sessionStorage.getItem('srb_admin') === 'true') {
+      isAdminLoggedIn = true;
+      updateAdminUI();
+  }
+  
+  loadStats();
+  loadRecentRequests();
+  loadNotices();
 }, 2500);
 
-// Update Dashboard Stats
-async function updateDonorCount() {
-    try {
-        // Count Donors
-        const { count: donorCount, error: err1 } = await supabaseClient
-            .from('donors')
-            .select('*', { count: 'exact', head: true });
-        if (!err1) document.getElementById('statDonors').innerText = donorCount + '+';
+// ============ NAVIGATION ============
+function toggleMenu(){
+  const menu = document.getElementById("menu");
+  const overlay = document.getElementById("overlay");
+  menu.classList.toggle("active");
+  overlay.style.display = menu.classList.contains("active") ? "block" : "none";
+}
 
-        // Count Pending Requests
-        const { count: reqCount, error: err2 } = await supabaseClient
-            .from('requests')
-            .select('*', { count: 'exact', head: true });
-        if (!err2) document.getElementById('statRequests').innerText = reqCount + '+';
-            
-    } catch (err) {
-        console.error("Error fetching stats:", err);
+function hidePages(){
+  const pages = ["home", "findDonor", "request", "beDonor", "bloodInfo", "eligibility", "about", "adminLogin", "adminPanel"];
+  pages.forEach(id=> document.getElementById(id).classList.add("hidden"));
+}
+
+function openPage(id){
+  hidePages();
+  document.getElementById(id).classList.remove("hidden");
+  window.scrollTo(0, 0);
+  if(document.getElementById("menu").classList.contains("active")) toggleMenu();
+  
+  // If opening admin panel, load data
+  if(id === 'adminPanel') loadAdminRequests();
+}
+
+// ============ ADMIN LOGIC ============
+function handleAdminClick() {
+    if(isAdminLoggedIn) {
+        openPage('adminPanel');
+    } else {
+        openPage('adminLogin');
+    }
+    toggleMenu(); // Close menu after click
+}
+
+function attemptLogin() {
+    const email = document.getElementById('adminEmail').value;
+    const pass = document.getElementById('adminPass').value;
+    
+    if(email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+        isAdminLoggedIn = true;
+        sessionStorage.setItem('srb_admin', 'true'); // Session storage
+        updateAdminUI();
+        openPage('adminPanel');
+    } else {
+        document.getElementById('loginError').style.display = 'block';
     }
 }
 
-// Load Recent Requests to Home Page
-async function loadRecentRequests() {
-    const container = document.getElementById('recentRequestsList');
+function logoutAdmin() {
+    isAdminLoggedIn = false;
+    sessionStorage.removeItem('srb_admin');
+    updateAdminUI();
+    openPage('home');
+}
+
+function updateAdminUI() {
+    const menuText = document.getElementById('adminMenuText');
+    if(isAdminLoggedIn) {
+        menuText.innerText = "Admin Dashboard";
+    } else {
+        menuText.innerText = "Admin Panel";
+    }
+}
+
+// ============ ADMIN ACTIONS ============
+
+// 1. Load Requests for Admin Panel
+async function loadAdminRequests() {
+    const container = document.getElementById('adminRequestList');
+    container.innerHTML = "<div class='loader' style='margin:20px auto;'></div>";
+    
     try {
         const { data, error } = await supabaseClient
             .from('requests')
             .select('*')
+            .order('created_at', { ascending: false });
+            
+        if(error) throw error;
+        
+        if(data.length === 0) {
+            container.innerHTML = "<p style='text-align:center; color:#888;'>No requests found.</p>";
+            return;
+        }
+        
+        container.innerHTML = "";
+        data.forEach(req => {
+            const html = `
+                <div class="donor-card ${req.is_solved ? 'solved' : ''}" style="flex-wrap:wrap;">
+                    <div class="donor-avatar">${req.blood_group}</div>
+                    <div class="donor-info" style="flex:1; min-width:150px;">
+                        <h4>${req.patient_name} ${req.is_solved ? '<span style="color:green; font-size:10px;">(SOLVED)</span>' : ''}</h4>
+                        <p><i class="fas fa-map-marker-alt"></i> ${req.location}</p>
+                        <p><i class="fas fa-phone"></i> ${req.contact}</p>
+                        <p><i class="fas fa-calendar"></i> ${req.required_date}</p>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn-solve" onclick="toggleSolved('${req.id}', ${req.is_solved})"><i class="fas fa-check"></i></button>
+                        <button class="btn-delete" onclick="deleteRequest('${req.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+        
+    } catch(e) {
+        console.error(e);
+        container.innerHTML = "<p style='color:red; text-align:center;'>Error loading data.</p>";
+    }
+}
+
+// 2. Toggle Solved Status
+async function toggleSolved(id, currentStatus) {
+    try {
+        const { error } = await supabaseClient
+            .from('requests')
+            .update({ is_solved: !currentStatus })
+            .eq('id', id);
+            
+        if(error) throw error;
+        loadAdminRequests(); // Reload list
+        loadRecentRequests(); // Update home page
+        loadStats(); // Update counts
+    } catch(e) {
+        alert("Error updating status");
+    }
+}
+
+// 3. Delete Request
+async function deleteRequest(id) {
+    if(confirm("Are you sure you want to delete this request?")) {
+        try {
+            const { error } = await supabaseClient
+                .from('requests')
+                .delete()
+                .eq('id', id);
+                
+            if(error) throw error;
+            loadAdminRequests();
+            loadRecentRequests();
+            loadStats();
+        } catch(e) {
+            alert("Error deleting request");
+        }
+    }
+}
+
+// 4. Post Notice
+async function postNotice() {
+    const text = document.getElementById('noticeText').value;
+    if(!text) return;
+    
+    try {
+        // Delete old notices first (keep only 1 latest)
+        await supabaseClient.from('notices').delete().neq('id', 0);
+        
+        // Insert new
+        const { error } = await supabaseClient
+            .from('notices')
+            .insert([{ content: text }]);
+            
+        if(error) throw error;
+        
+        alert("Notice Posted!");
+        document.getElementById('noticeText').value = "";
+        loadNotices();
+    } catch(e) {
+        alert("Error posting notice");
+    }
+}
+
+// 5. Delete Notice
+async function deleteNotice() {
+    try {
+        await supabaseClient.from('notices').delete().neq('id', 0);
+        loadNotices();
+    } catch(e) {}
+}
+
+// ============ PUBLIC DATA LOADERS ============
+
+async function loadStats() {
+    // Count Donors
+    const { count: dCount } = await supabaseClient.from('donors').select('*', { count: 'exact', head: true });
+    document.getElementById('statDonors').innerText = (dCount || 0) + '+';
+    
+    // Count Pending Requests (is_solved = false)
+    const { count: rCount } = await supabaseClient.from('requests').select('*', { count: 'exact', head: true }).eq('is_solved', false);
+    document.getElementById('statRequests').innerText = (rCount || 0) + '+';
+}
+
+async function loadRecentRequests() {
+    const container = document.getElementById('recentRequestsList');
+    try {
+        // Only show unsolved requests
+        const { data, error } = await supabaseClient
+            .from('requests')
+            .select('*')
+            .eq('is_solved', false)
             .order('created_at', { ascending: false })
-            .limit(5); // Show last 5 requests
+            .limit(5);
 
         if (error) throw error;
 
@@ -635,34 +604,33 @@ async function loadRecentRequests() {
     }
 }
 
-// Menu Toggle
-function toggleMenu(){
-  const menu = document.getElementById("menu");
-  const overlay = document.getElementById("overlay");
-  menu.classList.toggle("active");
-  overlay.style.display = menu.classList.contains("active") ? "block" : "none";
+async function loadNotices() {
+    const area = document.getElementById('noticeArea');
+    try {
+        const { data, error } = await supabaseClient
+            .from('notices')
+            .select('*')
+            .limit(1);
+            
+        if(error) throw error;
+        
+        if(data && data.length > 0) {
+            area.innerHTML = `
+                <div class="notice-board card">
+                    <h4><i class="fas fa-bullhorn"></i> Notice</h4>
+                    <p>${data[0].content}</p>
+                </div>
+            `;
+        } else {
+            area.innerHTML = "";
+        }
+    } catch(e) {
+        console.error("Notice load error", e);
+    }
 }
 
-// Page Navigation
-function hidePages(){
-  ["home", "findDonor", "request", "beDonor", "bloodInfo", "eligibility", "about"].forEach(id=>{
-    document.getElementById(id).classList.add("hidden");
-  });
-}
+// ============ USER ACTIONS ============
 
-function openPage(id){
-  hidePages();
-  document.getElementById(id).classList.remove("hidden");
-  window.scrollTo(0, 0);
-  const menu = document.getElementById("menu");
-  if(menu.classList.contains("active")) toggleMenu();
-}
-
-// ==========================================
-// DATABASE ACTIONS
-// ==========================================
-
-// 1. REGISTER NEW DONOR
 async function registerDonor() {
     const name = document.getElementById("donorName").value;
     const phone = document.getElementById("donorPhone").value;
@@ -676,29 +644,15 @@ async function registerDonor() {
     btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Saving...";
 
     try {
-        const { error } = await supabaseClient
-            .from('donors')
-            .insert([{ name: name, blood: blood, phone: phone, location: location }]);
-
+        const { error } = await supabaseClient.from('donors').insert([{ name, blood, phone, location }]);
         if (error) throw error;
-
-        alert("Success! You are now registered.");
         
-        // Send Email
-        const templateParams = { 
-            to_email: ADMIN_EMAIL, 
-            subject: "New Donor Registration", 
-            message: `Name: ${name}\nBlood: ${blood}\nPhone: ${phone}\nLoc: ${location}` 
-        };
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-
-        // Reset
+        alert("Success! You are now registered.");
         document.getElementById("donorName").value = "";
         document.getElementById("donorPhone").value = "";
         document.getElementById("donorLocation").value = "";
-        updateDonorCount();
+        loadStats();
         openPage('home');
-
     } catch (err) {
         alert("Error saving data.");
         console.error(err);
@@ -708,7 +662,6 @@ async function registerDonor() {
     }
 }
 
-// 2. SUBMIT BLOOD REQUEST (Updated)
 async function submitBloodRequest() {
     const patient = document.getElementById("patient").value;
     const location = document.getElementById("location").value;
@@ -723,33 +676,18 @@ async function submitBloodRequest() {
     btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Posting...";
 
     try {
-        // Save to Database
-        const { error } = await supabaseClient
-            .from('requests')
-            .insert([{
-                patient_name: patient,
-                blood_group: blood,
-                location: location,
-                contact: contact,
-                required_date: date
-            }]);
-
+        const { error } = await supabaseClient.from('requests').insert([{
+            patient_name: patient, blood_group: blood, location, contact, required_date: date
+        }]);
         if (error) throw error;
 
-        // Send Email Notification
-        const templateParams = { 
-            to_email: ADMIN_EMAIL, 
-            subject: "URGENT: Blood Request", 
-            message: `Patient: ${patient}\nBlood: ${blood}\nLoc: ${location}\nContact: ${contact}\nDate: ${date}` 
-        };
+        // Send Email
+        const templateParams = { to_email: "omorhosshin@gmail.com", subject: "New Blood Request", message: `Patient: ${patient}\nBlood: ${blood}\nLoc: ${location}\nContact: ${contact}` };
         emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
 
-        alert("Request Posted Successfully! It is now visible to everyone.");
-        
-        // Refresh Data
+        alert("Request Posted Successfully!");
         loadRecentRequests();
-        updateDonorCount();
-        
+        loadStats();
         openPage('home');
 
     } catch (err) {
@@ -761,34 +699,28 @@ async function submitBloodRequest() {
     }
 }
 
-// 3. FIND DONOR
 async function filterDonors() {
     const selectedBlood = document.getElementById("searchBlood").value;
     const container = document.getElementById("donorListContainer");
     container.innerHTML = "";
 
     if (!selectedBlood) {
-        container.innerHTML = `<div class="card" style="text-align: center; color: #888;"><p>Select a blood group.</p></div>`;
+        container.innerHTML = `<div class="card" style="text-align:center;"><p>Select a blood group.</p></div>`;
         return;
     }
 
-    container.innerHTML = `<div class="card" style="text-align:center;"><div class="loader" style="margin:10px auto;"></div><p>Loading donors...</p></div>`;
+    container.innerHTML = `<div class="loader" style="margin:20px auto;"></div>`;
 
     try {
-        const { data, error } = await supabaseClient
-            .from('donors')
-            .select('*')
-            .eq('blood', selectedBlood);
-
+        const { data, error } = await supabaseClient.from('donors').select('*').eq('blood', selectedBlood);
         if (error) throw error;
 
         container.innerHTML = "";
-
         if (data.length === 0) {
-            container.innerHTML = `<div class="card" style="text-align: center; color: #888;"><i class="fas fa-sad-tear" style="font-size: 30px;"></i><p style="margin-top:10px">No donors found for ${selectedBlood}.</p></div>`;
+            container.innerHTML = `<div class="card" style="text-align:center;"><p>No donors found for ${selectedBlood}.</p></div>`;
         } else {
             data.forEach(donor => {
-                const html = `
+                container.innerHTML += `
                     <div class="donor-card">
                         <div class="donor-avatar">${donor.blood}</div>
                         <div class="donor-info">
@@ -798,13 +730,10 @@ async function filterDonors() {
                         <a href="tel:${donor.phone}" class="donor-call-btn"><i class="fas fa-phone-alt"></i></a>
                     </div>
                 `;
-                container.innerHTML += html;
             });
         }
-
     } catch (err) {
-        container.innerHTML = `<div class="card" style="text-align: center; color: red;"><p>Error loading data.</p></div>`;
-        console.error(err);
+        container.innerHTML = `<div class="card" style="text-align:center; color:red;"><p>Error loading data.</p></div>`;
     }
 }
 </script>
