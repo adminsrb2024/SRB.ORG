@@ -175,7 +175,7 @@ button.primary-btn{
 button.primary-btn:hover{ transform: translateY(-2px); box-shadow: 0 10px 25px rgba(215, 25, 32, 0.4); }
 button.primary-btn:active { transform: translateY(0); }
 
-/* DONOR LIST STYLE */
+/* DONOR & REQUEST CARD STYLE */
 .donor-card {
   display: flex;
   align-items: center;
@@ -187,6 +187,11 @@ button.primary-btn:active { transform: translateY(0); }
   transition: 0.3s;
 }
 .donor-card:hover { border-color: var(--primary); }
+/* Urgent Request Specific Style */
+.urgent-card {
+  border-left: 4px solid var(--primary);
+  background: #fffafa;
+}
 .donor-avatar {
   width: 50px;
   height: 50px;
@@ -201,6 +206,10 @@ button.primary-btn:active { transform: translateY(0); }
   margin-right: 15px;
   border: 2px solid white;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.urgent-card .donor-avatar {
+  background: var(--primary);
+  color: white;
 }
 .donor-info h4 { font-size: 15px; margin-bottom: 4px; color: var(--text); }
 .donor-info p { font-size: 12px; color: var(--text-light); display: flex; align-items: center; gap: 4px; }
@@ -350,13 +359,21 @@ button.primary-btn:active { transform: translateY(0); }
         <div class="stat-label">Active Donors</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">100+</div>
-        <div class="stat-label">Lives Saved</div>
+        <div class="stat-num" id="statRequests">-</div>
+        <div class="stat-label">Pending Requests</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">24/7</div>
         <div class="stat-label">Service</div>
       </div>
+    </div>
+  </div>
+
+  <!-- Recent Blood Requests Section (NEW) -->
+  <div class="card">
+    <div class="card-title"><i class="fas fa-bell"></i> Recent Blood Requests</div>
+    <div id="recentRequestsList">
+        <p style="text-align:center; color:#888; font-size:13px;">Loading requests...</p>
     </div>
   </div>
 
@@ -381,15 +398,6 @@ button.primary-btn:active { transform: translateY(0); }
       <div class="dash-title">Eligibility</div>
       <div class="dash-desc">Check now</div>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><i class="fas fa-lightbulb"></i> Why Donate Blood?</div>
-    <ul class="check-list">
-      <li><i class="fas fa-check-circle"></i> Saves up to 3 lives with one donation.</li>
-      <li><i class="fas fa-check-circle"></i> Reduces risk of heart attack & cancer.</li>
-      <li><i class="fas fa-check-circle"></i> Burns calories and refreshes blood.</li>
-    </ul>
   </div>
 </div>
 
@@ -421,7 +429,7 @@ button.primary-btn:active { transform: translateY(0); }
 <div id="request" class="container hidden">
   <div class="card">
     <div class="card-title"><i class="fas fa-notes-medical"></i> Post Blood Request</div>
-    <p style="font-size:12px; color:#999; margin-bottom:15px;">Fill the form carefully. Admin will contact you soon.</p>
+    <p style="font-size:12px; color:#999; margin-bottom:15px;">This request will be public on the home page.</p>
     <div class="form-group">
       <label class="form-label">Patient Name</label>
       <input id="patient" placeholder="Full Name">
@@ -445,7 +453,7 @@ button.primary-btn:active { transform: translateY(0); }
       <label class="form-label">Required Date</label>
       <input id="reqDate" type="date">
     </div>
-    <button class="primary-btn" onclick="sendEmailRequest('request')"><i class="fas fa-paper-plane"></i> Submit Request</button>
+    <button class="primary-btn" onclick="submitBloodRequest()"><i class="fas fa-paper-plane"></i> Submit Request</button>
   </div>
 </div>
 
@@ -485,13 +493,11 @@ button.primary-btn:active { transform: translateY(0); }
     <ul class="check-list">
       <li><i class="fas fa-check"></i> You are between 18-60 years old.</li>
       <li><i class="fas fa-check"></i> Your weight is at least 45 kg.</li>
-      <li><i class="fas fa-check"></i> Your hemoglobin level is above 12.5 g/dL.</li>
     </ul>
     <div style="height:1px; background:#eee; margin:15px 0;"></div>
     <h4 style="color:var(--primary); font-size:14px; margin-bottom:10px;"><i class="fas fa-times"></i> You CANNOT Donate If:</h4>
     <ul class="check-list fail-list">
       <li><i class="fas fa-times"></i> You have cold, flu, or fever.</li>
-      <li><i class="fas fa-times"></i> You have recently had a tattoo or piercing.</li>
     </ul>
   </div>
 </div>
@@ -545,7 +551,7 @@ button.primary-btn:active { transform: translateY(0); }
 
 <script>
 // ==========================================
-// CONFIGURATION SECTION - YOUR KEYS INSERTED
+// CONFIGURATION SECTION
 // ==========================================
 
 const SUPABASE_URL = 'https://qhftnurfbqdtkccffagm.supabase.co';
@@ -569,22 +575,63 @@ setTimeout(()=>{
   document.getElementById("splash").style.display="none";
   document.getElementById("app").classList.remove("hidden");
   updateDonorCount();
+  loadRecentRequests(); // Load requests on startup
 }, 2500);
 
-// Update Dashboard Donor Count from Supabase
+// Update Dashboard Stats
 async function updateDonorCount() {
     try {
-        const { count, error } = await supabaseClient
+        // Count Donors
+        const { count: donorCount, error: err1 } = await supabaseClient
             .from('donors')
             .select('*', { count: 'exact', head: true });
-        
-        if (error) throw error;
-        
-        const countElement = document.getElementById('statDonors');
-        if(countElement) countElement.innerText = count + '+';
+        if (!err1) document.getElementById('statDonors').innerText = donorCount + '+';
+
+        // Count Pending Requests
+        const { count: reqCount, error: err2 } = await supabaseClient
+            .from('requests')
+            .select('*', { count: 'exact', head: true });
+        if (!err2) document.getElementById('statRequests').innerText = reqCount + '+';
+            
     } catch (err) {
-        console.error("Error fetching count:", err);
-        document.getElementById('statDonors').innerText = "0";
+        console.error("Error fetching stats:", err);
+    }
+}
+
+// Load Recent Requests to Home Page
+async function loadRecentRequests() {
+    const container = document.getElementById('recentRequestsList');
+    try {
+        const { data, error } = await supabaseClient
+            .from('requests')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(5); // Show last 5 requests
+
+        if (error) throw error;
+
+        container.innerHTML = "";
+        if(data.length === 0) {
+            container.innerHTML = "<p style='text-align:center; color:#888; font-size:13px;'>No active requests right now.</p>";
+            return;
+        }
+
+        data.forEach(req => {
+            const html = `
+                <div class="donor-card urgent-card">
+                    <div class="donor-avatar">${req.blood_group}</div>
+                    <div class="donor-info">
+                        <h4>${req.patient_name}</h4>
+                        <p><i class="fas fa-hospital"></i> ${req.location}</p>
+                        <p><i class="fas fa-calendar"></i> Need: ${req.required_date}</p>
+                    </div>
+                    <a href="tel:${req.contact}" class="donor-call-btn"><i class="fas fa-phone-alt"></i></a>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+    } catch(e) {
+        container.innerHTML = "<p style='color:red; text-align:center;'>Error loading requests.</p>";
     }
 }
 
@@ -612,7 +659,7 @@ function openPage(id){
 }
 
 // ==========================================
-// SUPABASE INTEGRATION
+// DATABASE ACTIONS
 // ==========================================
 
 // 1. REGISTER NEW DONOR
@@ -629,16 +676,15 @@ async function registerDonor() {
     btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Saving...";
 
     try {
-        const { data, error } = await supabaseClient
+        const { error } = await supabaseClient
             .from('donors')
-            .insert([
-                { name: name, blood: blood, phone: phone, location: location }
-            ]);
+            .insert([{ name: name, blood: blood, phone: phone, location: location }]);
 
         if (error) throw error;
 
-        alert("Success! You are now registered in the central database.");
+        alert("Success! You are now registered.");
         
+        // Send Email
         const templateParams = { 
             to_email: ADMIN_EMAIL, 
             subject: "New Donor Registration", 
@@ -646,6 +692,7 @@ async function registerDonor() {
         };
         emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
 
+        // Reset
         document.getElementById("donorName").value = "";
         document.getElementById("donorPhone").value = "";
         document.getElementById("donorLocation").value = "";
@@ -653,7 +700,7 @@ async function registerDonor() {
         openPage('home');
 
     } catch (err) {
-        alert("Error saving data. Please check your internet connection or try again later.");
+        alert("Error saving data.");
         console.error(err);
     } finally {
         btn.disabled = false;
@@ -661,7 +708,60 @@ async function registerDonor() {
     }
 }
 
-// 2. FIND DONOR
+// 2. SUBMIT BLOOD REQUEST (Updated)
+async function submitBloodRequest() {
+    const patient = document.getElementById("patient").value;
+    const location = document.getElementById("location").value;
+    const contact = document.getElementById("reqContact").value;
+    const blood = document.getElementById("reqBlood").value;
+    const date = document.getElementById("reqDate").value;
+
+    if(!patient || !location || !contact || !date) { alert("Please fill all fields!"); return; }
+
+    const btn = event.target;
+    btn.disabled = true;
+    btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Posting...";
+
+    try {
+        // Save to Database
+        const { error } = await supabaseClient
+            .from('requests')
+            .insert([{
+                patient_name: patient,
+                blood_group: blood,
+                location: location,
+                contact: contact,
+                required_date: date
+            }]);
+
+        if (error) throw error;
+
+        // Send Email Notification
+        const templateParams = { 
+            to_email: ADMIN_EMAIL, 
+            subject: "URGENT: Blood Request", 
+            message: `Patient: ${patient}\nBlood: ${blood}\nLoc: ${location}\nContact: ${contact}\nDate: ${date}` 
+        };
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+
+        alert("Request Posted Successfully! It is now visible to everyone.");
+        
+        // Refresh Data
+        loadRecentRequests();
+        updateDonorCount();
+        
+        openPage('home');
+
+    } catch (err) {
+        alert("Error submitting request.");
+        console.error(err);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = "<i class='fas fa-paper-plane'></i> Submit Request";
+    }
+}
+
+// 3. FIND DONOR
 async function filterDonors() {
     const selectedBlood = document.getElementById("searchBlood").value;
     const container = document.getElementById("donorListContainer");
@@ -706,48 +806,6 @@ async function filterDonors() {
         container.innerHTML = `<div class="card" style="text-align: center; color: red;"><p>Error loading data.</p></div>`;
         console.error(err);
     }
-}
-
-// 3. REQUEST BLOOD
-function sendEmailRequest(type) {
-  let templateParams = {};
-  let valid = false;
- 
-  if (type === 'request') {
-      const patient = document.getElementById("patient").value;
-      const location = document.getElementById("location").value;
-      const contact = document.getElementById("reqContact").value;
-      const blood = document.getElementById("reqBlood").value;
-     
-      if(!patient || !location || !contact) { alert("Please fill all fields!"); return; }
-      templateParams = { to_email: ADMIN_EMAIL, subject: "Blood Request", message: `Patient: ${patient}\nBlood: ${blood}\nLoc: ${location}\nContact: ${contact}` };
-      valid = true;
-  }
-
-  if (valid) {
-      const btn = event.target;
-      btn.disabled = true;
-      btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Processing...";
-
-      if(typeof emailjs !== 'undefined'){
-          emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-            .then(() => {
-              alert("Request Sent Successfully!");
-              openPage('home');
-            })
-            .catch((e) => {
-               alert("Error sending request.");
-               console.error(e);
-            })
-            .finally(() => {
-               btn.disabled = false;
-               btn.innerHTML = "<i class='fas fa-paper-plane'></i> Submit Request";
-            });
-      } else {
-          alert("Connection error.");
-          btn.disabled = false;
-      }
-  }
 }
 </script>
 </body>
