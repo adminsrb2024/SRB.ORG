@@ -145,7 +145,6 @@ button.danger-btn{ background: #dc3545; }
 <!-- SPLASH SCREEN -->
 <div id="splash">
   <div class="splash-logo-container">
-    <!-- LOGO FIXED HERE -->
     <img src="https://z-cdn-media.chatglm.cn/files/3bd2ac78-e146-4d71-b99d-ac64f35f4bf9.jpg?auth_key=1871394197-effa948b636c4ab781ba1fcfe3fa18d2-0-dba95b4ab61b5cf4ea7d439516b245d9" class="splash-logo" alt="Logo">
   </div>
   <div class="splash-text">Sreenagar Rokter Bondhon</div>
@@ -159,7 +158,6 @@ button.danger-btn{ background: #dc3545; }
 <div class="header">
   <div class="header-left">
     <span class="menuBtn" onclick="toggleMenu()"><i class="fas fa-bars"></i></span>
-    <!-- LOGO FIXED HERE -->
     <img src="https://z-cdn-media.chatglm.cn/files/3bd2ac78-e146-4d71-b99d-ac64f35f4bf9.jpg?auth_key=1871394197-effa948b636c4ab781ba1fcfe3fa18d2-0-dba95b4ab61b5cf4ea7d439516b245d9" class="header-logo" alt="Logo">
   </div>
   <div style="text-align:right">
@@ -336,29 +334,44 @@ const EMAILJS_PUBLIC_KEY = "tTDL_g9ChY2fiUl4t";
 const EMAILJS_SERVICE_ID = "service_rka3imy";
 const EMAILJS_TEMPLATE_ID = "template_5j956tn";
 
-// Initialize Supabase
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// Initialize EmailJS
-if(typeof emailjs !== 'undefined'){ emailjs.init(EMAILJS_PUBLIC_KEY); }
-
+// Global variable for Supabase Client
+let supabase;
 let isAdminLoggedIn = false;
 
-// ============ APP INITIALIZATION ============
+// ============ APP INITIALIZATION (FIXED) ============
 window.onload = function() {
+    // 1. Start App UI Immediately
     setTimeout(()=>{
       document.getElementById("splash").style.display="none";
       document.getElementById("app").classList.remove("hidden");
       
+      // Check Admin Session
       if(sessionStorage.getItem('srb_admin') === 'true') {
           isAdminLoggedIn = true;
           updateAdminUI();
       }
       
-      loadStats();
-      loadRecentRequests();
-      loadNotices();
+      // 2. Initialize Database Connection (Inside try-catch)
+      try {
+         if(window.supabase) {
+             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+             // Load Data
+             loadStats();
+             loadRecentRequests();
+             loadNotices();
+         } else {
+             console.error("Supabase library not found");
+             document.getElementById('recentRequestsList').innerHTML = "<p style='color:red; text-align:center;'>Connection Error. Please refresh.</p>";
+         }
+      } catch(e) {
+         console.error(e);
+         document.getElementById('recentRequestsList').innerHTML = "<p style='color:red; text-align:center;'>Initialization Failed.</p>";
+      }
+
     }, 2500);
+    
+    // Init EmailJS
+    if(typeof emailjs !== 'undefined'){ emailjs.init(EMAILJS_PUBLIC_KEY); }
 };
 
 // ============ NAVIGATION ============
@@ -425,6 +438,7 @@ function updateAdminUI() {
 async function loadAdminRequests() {
     const container = document.getElementById('adminRequestList');
     container.innerHTML = "<div class='loader' style='margin:20px auto;'></div>";
+    if(!supabase) return;
     
     try {
         const { data, error } = await supabase
@@ -459,11 +473,12 @@ async function loadAdminRequests() {
         
     } catch(e) {
         console.error(e);
-        container.innerHTML = "<p style='color:red; text-align:center;'>Error loading data. Check console & SQL setup.</p>";
+        container.innerHTML = "<p style='color:red; text-align:center;'>Error loading data.</p>";
     }
 }
 
 async function toggleSolved(id, currentStatus) {
+    if(!supabase) return;
     try {
         const { error } = await supabase
             .from('requests')
@@ -480,6 +495,7 @@ async function toggleSolved(id, currentStatus) {
 }
 
 async function deleteRequest(id) {
+    if(!supabase) return;
     if(confirm("Are you sure you want to delete this request?")) {
         try {
             const { error } = await supabase
@@ -498,6 +514,7 @@ async function deleteRequest(id) {
 }
 
 async function postNotice() {
+    if(!supabase) return;
     const text = document.getElementById('noticeText').value;
     if(!text) return;
     
@@ -514,11 +531,12 @@ async function postNotice() {
         loadNotices();
     } catch(e) {
         console.error(e);
-        alert("Error posting notice. Did you run the SQL setup?");
+        alert("Error posting notice.");
     }
 }
 
 async function deleteNotice() {
+    if(!supabase) return;
     try {
         await supabase.from('notices').delete().neq('id', 0);
         loadNotices();
@@ -528,6 +546,7 @@ async function deleteNotice() {
 // ============ PUBLIC DATA LOADERS ============
 
 async function loadStats() {
+    if(!supabase) return;
     try {
         const { count: dCount } = await supabase.from('donors').select('*', { count: 'exact', head: true });
         document.getElementById('statDonors').innerText = (dCount || 0) + '+';
@@ -540,6 +559,7 @@ async function loadStats() {
 }
 
 async function loadRecentRequests() {
+    if(!supabase) return;
     const container = document.getElementById('recentRequestsList');
     try {
         const { data, error } = await supabase
@@ -575,6 +595,7 @@ async function loadRecentRequests() {
 }
 
 async function loadNotices() {
+    if(!supabase) return;
     const area = document.getElementById('noticeArea');
     try {
         const { data, error } = await supabase
@@ -602,6 +623,7 @@ async function loadNotices() {
 // ============ USER ACTIONS ============
 
 async function registerDonor() {
+    if(!supabase) { alert("App is loading, please wait..."); return; }
     const name = document.getElementById("donorName").value;
     const phone = document.getElementById("donorPhone").value;
     const blood = document.getElementById("donorBlood").value;
@@ -633,6 +655,7 @@ async function registerDonor() {
 }
 
 async function submitBloodRequest() {
+    if(!supabase) { alert("App is loading, please wait..."); return; }
     const patient = document.getElementById("patient").value;
     const location = document.getElementById("location").value;
     const contact = document.getElementById("reqContact").value;
@@ -669,6 +692,7 @@ async function submitBloodRequest() {
 }
 
 async function filterDonors() {
+    if(!supabase) return;
     const selectedBlood = document.getElementById("searchBlood").value;
     const container = document.getElementById("donorListContainer");
     container.innerHTML = "";
