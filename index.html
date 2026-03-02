@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sreenagar Rokter Bondhon</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 <style>
 :root {
   --primary: #d71920;
@@ -102,7 +101,7 @@ button.danger-btn{ background: #dc3545; }
 .urgent-card .donor-avatar { background: var(--primary); color: white; }
 .donor-info h4 { font-size: 15px; margin-bottom: 4px; color: var(--text); }
 .donor-info p { font-size: 12px; color: var(--text-light); display: flex; align-items: center; gap: 4px; }
-.donor-call-btn { margin-left: auto; background: #25D366; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 18px; box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3); }
+.donor-call-btn { margin-left: auto; background: #25D366; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 18px; box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3); flex-shrink: 0; }
 
 /* NOTICE BOARD */
 .notice-board { background: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
@@ -110,8 +109,8 @@ button.danger-btn{ background: #dc3545; }
 .notice-board p { font-size: 13px; color: #856404; }
 
 /* ADMIN ACTION BUTTONS */
-.admin-actions { display: flex; gap: 8px; margin-left: auto; }
-.admin-actions button { width: 35px; height: 35px; border-radius: 8px; border: none; color: white; cursor: pointer; font-size: 14px; }
+.admin-actions { display: flex; gap: 8px; margin-left: auto; flex-shrink: 0; }
+.admin-actions button { width: 35px; height: 35px; border-radius: 8px; border: none; color: white; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
 .btn-solve { background: #28a745; }
 .btn-delete { background: #dc3545; }
 
@@ -124,7 +123,7 @@ button.danger-btn{ background: #dc3545; }
 .menu{ position:fixed; left:-300px; top:0; width:280px; height:100%; background:white; transition:.3s ease-in-out; z-index:999; box-shadow: 5px 0 30px rgba(0,0,0,0.1); }
 .menu.active{left:0}
 .menu-header { background: var(--primary); color: white; padding: 30px 20px; margin-bottom: 10px; }
-.menu a{ display:flex; align-items: center; padding:16px 25px; color:#444; text-decoration:none; transition: 0.2s; font-weight: 500; font-size: 14px; }
+.menu a{ display:flex; align-items: center; padding:16px 25px; color:#444; text-decoration:none; transition: 0.2s; font-weight: 500; font-size: 14px; cursor: pointer; }
 .menu a i { margin-right: 15px; color: #aaa; width: 20px; font-size: 16px; }
 .menu a:hover { background: #fff5f5; color: var(--primary); }
 .menu a:hover i { color: var(--primary); }
@@ -134,7 +133,7 @@ button.danger-btn{ background: #dc3545; }
 .splash-logo-container { width: 130px; height: 130px; border-radius: 50%; background: white; padding: 5px; box-shadow: 0 10px 40px rgba(215, 25, 32, 0.3); margin-bottom: 25px; animation: pulse 2s infinite; }
 .splash-logo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .splash-text { font-size: 22px; color: var(--primary); font-weight: 800; letter-spacing: -0.5px; }
-.loader { width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+.loader { width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-top: 20px; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 .hidden {display:none}
@@ -326,6 +325,7 @@ button.danger-btn{ background: #dc3545; }
 
 <script>
 // ============ CONFIGURATION ============
+// এখানে আপনার Supabase Details গুলো ঠিক আছে কিনা দেখে নিন
 const SUPABASE_URL = 'https://qhftnurfbqdtkccffagm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnRudXJmYnFkdGtjY2ZmYWdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MTA0MjcsImV4cCI6MjA4NzQ4NjQyN30.pNEjziqmkIP5vIC7Iu2Qwkz25cysKHoVMXJme5ARwTE';
 const ADMIN_EMAIL = "admin@srb.com";
@@ -334,14 +334,12 @@ const EMAILJS_PUBLIC_KEY = "tTDL_g9ChY2fiUl4t";
 const EMAILJS_SERVICE_ID = "service_rka3imy";
 const EMAILJS_TEMPLATE_ID = "template_5j956tn";
 
-// Global variable
 var supabase = null;
 var isAdminLoggedIn = false;
 
-// ============ ROBUST INITIALIZATION ============
-// This ensures app opens even if image loading hangs
+// ============ INITIALIZATION ============
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. Force Open App after 2.5s
+    // 1. Open App after 2.5s
     setTimeout(function() {
         document.getElementById("splash").style.display = "none";
         document.getElementById("app").classList.remove("hidden");
@@ -361,20 +359,25 @@ function initDatabase() {
     try {
         if(window.supabase) {
             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            // Init EmailJS
             if(typeof emailjs !== 'undefined') emailjs.init(EMAILJS_PUBLIC_KEY);
             
-            // Load Data
+            // Load Initial Data
             loadStats();
             loadRecentRequests();
             loadNotices();
         } else {
-            console.log("Supabase library missing");
-            document.getElementById('recentRequestsList').innerHTML = "<p style='color:red; text-align:center;'>Connection Error</p>";
+            console.error("Supabase library missing");
+            showError("Connection library failed to load.");
         }
     } catch(e) {
         console.error(e);
+        showError("Database connection failed.");
     }
+}
+
+function showError(msg) {
+    document.getElementById('recentRequestsList').innerHTML = "<p style='color:red; text-align:center;'>"+msg+"</p>";
+    document.getElementById('statDonors').innerText = "Err";
 }
 
 // ============ NAVIGATION ============
@@ -395,7 +398,14 @@ function openPage(id){
   document.getElementById(id).classList.remove("hidden");
   window.scrollTo(0, 0);
   if(document.getElementById("menu").classList.contains("active")) toggleMenu();
+  
+  // Load data when opening specific pages
   if(id === 'adminPanel') loadAdminRequests();
+  if(id === 'home') {
+      loadStats();
+      loadRecentRequests();
+      loadNotices();
+  }
 }
 
 // ============ ADMIN LOGIC ============
@@ -496,20 +506,29 @@ function deleteRequest(id) {
 function postNotice() {
     if(!supabase) return;
     var text = document.getElementById('noticeText').value;
-    if(!text) return;
+    if(!text) { alert("Write something!"); return; }
     
-    // Simple: Delete old, insert new
+    // Delete old notices first
     supabase.from('notices').delete().neq('id', 0).then(function() {
         supabase.from('notices').insert([{ content: text }]).then(function(response) {
-            if(response.error) alert("Error posting notice. Check SQL RLS.");
-            else { alert("Notice Posted!"); document.getElementById('noticeText').value = ""; loadNotices(); }
+            if(response.error) {
+                alert("Error posting notice. Check SQL permissions."); 
+                console.error(response.error);
+            }
+            else { 
+                alert("Notice Posted!"); 
+                document.getElementById('noticeText').value = ""; 
+                loadNotices(); 
+            }
         });
     });
 }
 
 function deleteNotice() {
     if(!supabase) return;
-    supabase.from('notices').delete().neq('id', 0).then(function() { loadNotices(); });
+    supabase.from('notices').delete().neq('id', 0).then(function() { 
+        loadNotices(); 
+    });
 }
 
 // ============ PUBLIC DATA LOADERS ============
@@ -551,6 +570,7 @@ function loadRecentRequests() {
             `;
         });
     }).catch(function(e) {
+        console.error(e);
         container.innerHTML = "<p style='color:red; text-align:center;'>Error loading requests.</p>";
     });
 }
@@ -584,14 +604,15 @@ function registerDonor() {
     supabase.from('donors').insert([{ name: name, blood: blood, phone: phone, location: location }])
     .then(function(response) {
         if(response.error) throw response.error;
-        alert("Success!");
+        alert("Registration Successful!");
         document.getElementById("donorName").value = "";
         document.getElementById("donorPhone").value = "";
         document.getElementById("donorLocation").value = "";
         loadStats();
         openPage('home');
     }).catch(function(err) {
-        alert("Error saving data.");
+        console.error(err);
+        alert("Error saving data. Check console for details.");
     }).finally(function() {
         btn.disabled = false;
         btn.innerHTML = "<i class='fas fa-user-plus'></i> Register Now";
@@ -624,11 +645,12 @@ function submitBloodRequest() {
             emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
         }
 
-        alert("Request Posted!");
+        alert("Request Posted Successfully!");
         loadRecentRequests();
         loadStats();
         openPage('home');
     }).catch(function(err) {
+        console.error(err);
         alert("Error submitting request.");
     }).finally(function() {
         btn.disabled = false;
@@ -672,7 +694,8 @@ function filterDonors() {
             });
         }
     }).catch(function(err) {
-        container.innerHTML = `<div class="card" style="text-align:center; color:red;"><p>Error loading data.</p></div>`;
+        console.error(err);
+        container.innerHTML = `<div class="card" style="text-align:center; color:red;"><p>Error loading donors.</p></div>`;
     });
 }
 </script>
