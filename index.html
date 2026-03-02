@@ -32,7 +32,9 @@ body{background:var(--bg);padding-bottom:90px; color: var(--text);}
 }
 .header-left { display: flex; align-items: center; gap: 12px; }
 .menuBtn{ font-size:22px; cursor:pointer; padding: 5px; }
-.header-logo{ width: 42px; height: 42px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); background: white; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+/* Logo Styling */
+.header-logo-img{ width: 42px; height: 42px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); object-fit: cover; }
+.header-logo-icon{ width: 42px; height: 42px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); background: white; color: var(--primary); display: none; align-items: center; justify-content: center; font-size: 22px; }
 .header-title { font-size: 17px; font-weight: 700; }
 .header-subtitle { font-size: 10px; opacity: 0.9; }
 
@@ -69,17 +71,18 @@ body{background:var(--bg);padding-bottom:90px; color: var(--text);}
 .form-label { display: block; margin-bottom: 6px; font-size: 12px; color: var(--text-light); font-weight: 600; }
 input, select, textarea{ width:100%; padding:14px; border:2px solid #f0f0f0; border-radius:10px; background: #fafafa; font-size: 14px; }
 input:focus, select:focus, textarea:focus { border-color: var(--primary); background: white; }
-button.primary-btn{ width:100%; padding:15px; border:none; border-radius:12px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color:white; font-size:15px; font-weight: 700; cursor:pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+button.primary-btn{ width:100%; padding:15px; border:none; border-radius:12px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color:white; font-size:15px; font-weight: 700; cursor:pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+button.primary-btn:active{ transform: scale(0.98); }
 button.danger-btn{ background: #dc3545; }
 
 /* LISTS */
 .donor-card { display: flex; align-items: center; background: white; padding: 15px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #eee; }
 .donor-card.urgent-card { border-left: 4px solid var(--primary); background: #fffafa; }
-.donor-avatar { width: 50px; height: 50px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 800; margin-right: 15px; }
+.donor-avatar { width: 50px; height: 50px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 800; margin-right: 15px; flex-shrink: 0; }
 .urgent-card .donor-avatar { background: var(--primary); color: white; }
 .donor-info h4 { font-size: 15px; margin-bottom: 4px; }
 .donor-info p { font-size: 12px; color: var(--text-light); }
-.donor-call-btn { margin-left: auto; background: #25D366; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 18px; }
+.donor-call-btn { margin-left: auto; background: #25D366; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 18px; flex-shrink: 0; }
 
 /* NOTICE */
 .notice-board { background: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
@@ -107,8 +110,9 @@ button.danger-btn{ background: #dc3545; }
 
 /* SPLASH */
 #splash { height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; background: white; z-index: 1000; position: fixed; top: 0; left: 0; width: 100%; }
-.splash-logo-container { width: 130px; height: 130px; border-radius: 50%; background: white; box-shadow: 0 10px 40px rgba(215, 25, 32, 0.3); margin-bottom: 25px; animation: pulse 2s infinite; display: flex; align-items: center; justify-content: center; }
-.splash-logo { font-size: 70px; color: var(--primary); }
+.splash-logo-container { width: 130px; height: 130px; border-radius: 50%; background: white; box-shadow: 0 10px 40px rgba(215, 25, 32, 0.3); margin-bottom: 25px; animation: pulse 2s infinite; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.splash-logo-img { width: 100%; height: 100%; object-fit: cover; }
+.splash-logo-icon { font-size: 60px; color: var(--primary); display: none; }
 .splash-text { font-size: 22px; color: var(--primary); font-weight: 800; }
 .loader { width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-top: 20px; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -120,7 +124,9 @@ button.danger-btn{ background: #dc3545; }
 <!-- SPLASH -->
 <div id="splash">
   <div class="splash-logo-container">
-    <i class="fas fa-tint splash-logo"></i>
+    <!-- আপনার আগের লোগোর লিংক -->
+    <img src="https://z-cdn-media.chatglm.cn/files/3bd2ac78-e146-4d71-b99d-ac64f35f4bf9.jpg" class="splash-logo-img" onerror="this.style.display='none'; document.getElementById('splash-icon').style.display='block'">
+    <i id="splash-icon" class="fas fa-tint splash-logo-icon"></i>
   </div>
   <div class="splash-text">Sreenagar Rokter Bondhon</div>
   <div class="loader"></div>
@@ -132,7 +138,9 @@ button.danger-btn{ background: #dc3545; }
 <div class="header">
   <div class="header-left">
     <span class="menuBtn" onclick="toggleMenu()"><i class="fas fa-bars"></i></span>
-    <div class="header-logo"><i class="fas fa-tint"></i></div>
+    <!-- Header Logo -->
+    <img src="https://z-cdn-media.chatglm.cn/files/3bd2ac78-e146-4d71-b99d-ac64f35f4bf9.jpg" class="header-logo-img" onerror="this.style.display='none'; document.getElementById('header-icon').style.display='flex'">
+    <div id="header-icon" class="header-logo-icon"><i class="fas fa-tint"></i></div>
   </div>
   <div style="text-align:right">
     <div class="header-title">Sreenagar Rokter Bondhon</div>
@@ -156,6 +164,7 @@ button.danger-btn{ background: #dc3545; }
 
   <!-- HOME PAGE -->
   <div id="home" class="container">
+    <!-- এডমিন পোস্ট এখানে দেখাবে -->
     <div id="noticeArea"></div>
     
     <div class="card hero-card">
@@ -210,12 +219,12 @@ button.danger-btn{ background: #dc3545; }
   <!-- BE A DONOR -->
   <div id="beDonor" class="container hidden">
     <div class="card">
-      <div class="card-title"><i class="fas fa-user-plus"></i> Register</div>
+      <div class="card-title"><i class="fas fa-user-plus"></i> Register as Donor</div>
       <div class="form-group"><label class="form-label">Name</label><input id="donorName" placeholder="Your Name"></div>
       <div class="form-group"><label class="form-label">Blood Group</label><select id="donorBlood"><option>A+</option><option>B+</option><option>O+</option><option>AB+</option><option>A-</option><option>B-</option><option>O-</option><option>AB-</option></select></div>
       <div class="form-group"><label class="form-label">Mobile</label><input id="donorPhone" type="tel" placeholder="01XXXXXXXXX"></div>
       <div class="form-group"><label class="form-label">Location</label><input id="donorLocation" placeholder="Village"></div>
-      <button class="primary-btn" onclick="registerDonor()"><i class="fas fa-check-circle"></i> Register</button>
+      <button class="primary-btn" onclick="registerDonor()"><i class="fas fa-check-circle"></i> Register Now</button>
     </div>
   </div>
 
@@ -226,7 +235,6 @@ button.danger-btn{ background: #dc3545; }
       <ul style="list-style:none;">
         <li style="margin-bottom:10px;"><i class="fas fa-check" style="color:green; margin-right:10px;"></i> Age 18-60 years.</li>
         <li style="margin-bottom:10px;"><i class="fas fa-check" style="color:green; margin-right:10px;"></i> Weight at least 45 kg.</li>
-        <li style="margin-bottom:10px;"><i class="fas fa-times" style="color:red; margin-right:10px;"></i> No recent tattoo or surgery.</li>
       </ul>
     </div>
   </div>
@@ -253,14 +261,13 @@ button.danger-btn{ background: #dc3545; }
       <!-- NOTICE POST -->
       <div style="background:#f9f9f9; padding:15px; border-radius:10px; margin-bottom:20px;">
         <h4 style="font-size:14px; margin-bottom:10px;"><i class="fas fa-bullhorn"></i> Post Public Notice</h4>
-        <textarea id="noticeText" placeholder="Write notice here..." style="width:100%; height:80px; margin-bottom:10px; padding:10px; border:1px solid #ddd; border-radius:8px;"></textarea>
+        <textarea id="noticeText" placeholder="Write notice for home page..." style="width:100%; height:80px; margin-bottom:10px; padding:10px; border:1px solid #ddd; border-radius:8px;"></textarea>
         <div style="display:flex; gap:10px;">
-          <button class="primary-btn" style="padding:10px; font-size:13px;" onclick="postNotice()"><i class="fas fa-paper-plane"></i> Post to Home</button>
+          <button class="primary-btn" style="padding:10px; font-size:13px;" onclick="postNotice()"><i class="fas fa-paper-plane"></i> Post</button>
           <button class="primary-btn danger-btn" style="padding:10px; font-size:13px;" onclick="deleteNotice()"><i class="fas fa-trash"></i> Remove</button>
         </div>
       </div>
 
-      <!-- REQUEST MANAGE -->
       <h4 style="margin-bottom:10px;"><i class="fas fa-list"></i> Manage Requests</h4>
       <div id="adminRequestList"></div>
     </div>
@@ -277,7 +284,7 @@ button.danger-btn{ background: #dc3545; }
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
-// ===== CONFIGURATION =====
+// ===== CONFIG =====
 const SUPABASE_URL = 'https://qhftnurfbqdtkccffagm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnRudXJmYnFkdGtjY2ZmYWdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MTA0MjcsImV4cCI6MjA4NzQ4NjQyN30.pNEjziqmkIP5vIC7Iu2Qwkz25cysKHoVMXJme5ARwTE';
 
@@ -299,7 +306,6 @@ function initApp() {
         if(sessionStorage.getItem('admin') === 'yes') isAdmin = true;
         updateAdminUI();
         
-        // Load Data
         loadStats();
         loadNotices();
         loadRecentRequests();
@@ -395,20 +401,47 @@ function loadRecentRequests() {
 
 // ===== ACTIONS =====
 function registerDonor() {
-    var d = { name: document.getElementById('donorName').value, blood: document.getElementById('donorBlood').value, phone: document.getElementById('donorPhone').value, location: document.getElementById('donorLocation').value };
+    if(!supabase) { alert("App not ready"); return; }
+    var d = { 
+        name: document.getElementById('donorName').value, 
+        blood: document.getElementById('donorBlood').value, 
+        phone: document.getElementById('donorPhone').value, 
+        location: document.getElementById('donorLocation').value 
+    };
     if(!d.name || !d.phone) { alert("Fill all fields"); return; }
+    
     supabase.from('donors').insert([d]).then(r => {
-        if(r.error) alert("Error saving");
-        else { alert("Success!"); openPage('home'); loadStats(); }
+        if(r.error) { 
+            console.error(r.error); 
+            alert("Error: " + r.error.message); 
+        } else { 
+            alert("Registration Successful!"); 
+            openPage('home'); 
+            loadStats(); 
+        }
     });
 }
 
 function submitBloodRequest() {
-    var d = { patient_name: document.getElementById('patient').value, blood_group: document.getElementById('reqBlood').value, location: document.getElementById('location').value, contact: document.getElementById('reqContact').value, required_date: document.getElementById('reqDate').value };
+    if(!supabase) { alert("App not ready"); return; }
+    var d = { 
+        patient_name: document.getElementById('patient').value, 
+        blood_group: document.getElementById('reqBlood').value, 
+        location: document.getElementById('location').value, 
+        contact: document.getElementById('reqContact').value, 
+        required_date: document.getElementById('reqDate').value 
+    };
     if(!d.patient_name || !d.contact) { alert("Fill all fields"); return; }
+    
     supabase.from('requests').insert([d]).then(r => {
-        if(r.error) alert("Error");
-        else { alert("Request Posted!"); openPage('home'); loadRecentRequests(); loadStats(); }
+        if(r.error) { 
+            alert("Error: " + r.error.message); 
+        } else { 
+            alert("Request Submitted!"); 
+            openPage('home'); 
+            loadRecentRequests(); 
+            loadStats(); 
+        }
     });
 }
 
@@ -416,7 +449,7 @@ function filterDonors() {
     var b = document.getElementById('searchBlood').value;
     var c = document.getElementById('donorListContainer');
     if(!b) { c.innerHTML = ""; return; }
-    c.innerHTML = "<div class='loader' style='margin:20px auto;'></div>";
+    c.innerHTML = "Searching...";
     supabase.from('donors').select('*').eq('blood', b).then(function(r) {
         if(r.error || !r.data.length) { c.innerHTML = "<div class='card'><p style='text-align:center;'>No donors found.</p></div>"; return; }
         c.innerHTML = "";
@@ -461,11 +494,17 @@ function deleteReq(id) {
 function postNotice() {
     var t = document.getElementById('noticeText').value;
     if(!t) { alert("Write something"); return; }
-    // Delete old, insert new
+    
+    // পুরানো নোটিশ ডিলিট করে নতুনটা ঢোকানো
     supabase.from('notices').delete().neq('id', 0).then(() => {
         supabase.from('notices').insert([{ content: t }]).then(r => {
-            if(r.error) alert("Error");
-            else { alert("Notice Posted on Home Page!"); loadNotices(); document.getElementById('noticeText').value = ""; }
+            if(r.error) { 
+                alert("Failed to post: " + r.error.message); 
+            } else { 
+                alert("Notice Posted Successfully!"); 
+                loadNotices(); 
+                document.getElementById('noticeText').value = ""; 
+            }
         });
     });
 }
