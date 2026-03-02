@@ -32,7 +32,6 @@ body{background:var(--bg);padding-bottom:90px; color: var(--text);}
 }
 .header-left { display: flex; align-items: center; gap: 12px; }
 .menuBtn{ font-size:22px; cursor:pointer; padding: 5px; }
-/* Logo Styling */
 .header-logo-img{ width: 42px; height: 42px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); object-fit: cover; background: white; }
 .header-logo-icon{ width: 42px; height: 42px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); background: white; color: var(--primary); display: none; align-items: center; justify-content: center; font-size: 22px; }
 .header-title { font-size: 17px; font-weight: 700; }
@@ -124,7 +123,6 @@ button.danger-btn{ background: #dc3545; }
 <!-- SPLASH -->
 <div id="splash">
   <div class="splash-logo-container">
-    <!-- আপনার লোগোর লিংক এখানে দেওয়া আছে -->
     <img src="https://z-cdn-media.chatglm.cn/files/88a5ade6-3a4b-4b2f-bfd2-2573d6303982.jpg" class="splash-logo-img" onerror="this.style.display='none'; document.getElementById('splash-icon').style.display='block'">
     <i id="splash-icon" class="fas fa-tint splash-logo-icon"></i>
   </div>
@@ -138,7 +136,6 @@ button.danger-btn{ background: #dc3545; }
 <div class="header">
   <div class="header-left">
     <span class="menuBtn" onclick="toggleMenu()"><i class="fas fa-bars"></i></span>
-    <!-- Header Logo -->
     <img src="https://z-cdn-media.chatglm.cn/files/88a5ade6-3a4b-4b2f-bfd2-2573d6303982.jpg" class="header-logo-img" onerror="this.style.display='none'; document.getElementById('header-icon').style.display='flex'">
     <div id="header-icon" class="header-logo-icon"><i class="fas fa-tint"></i></div>
   </div>
@@ -178,7 +175,7 @@ button.danger-btn{ background: #dc3545; }
 
     <div class="card">
       <div class="card-title"><i class="fas fa-bell"></i> Recent Requests</div>
-      <div id="recentRequestsList"><p style="text-align:center; color:#888;">Loading...</p></div>
+      <div id="recentRequestsList"><p style="text-align:center; color:#888;">Connecting...</p></div>
     </div>
 
     <div class="dashboard-grid">
@@ -281,10 +278,11 @@ button.danger-btn{ background: #dc3545; }
 
 </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<!-- JS Delivr CDN (Faster Loading) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 // ===== CONFIGURATION =====
-// এখানে আপনার Key গুলো দেওয়া আছে
 const SUPABASE_URL = 'https://qhftnurfbqdtkccffagm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnRudXJmYnFkdGtjY2ZmYWdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MTA0MjcsImV4cCI6MjA4NzQ4NjQyN30.pNEjziqmkIP5vIC7Iu2Qwkz25cysKHoVMXJme5ARwTE';
 
@@ -297,20 +295,25 @@ window.onload = function() {
         document.getElementById("splash").style.display = "none";
         document.getElementById("app").classList.remove("hidden");
         initApp();
-    }, 2500);
+    }, 2000); // স্প্ল্যাশ স্ক্রিন ২ সেকেন্ড
 };
 
 function initApp() {
+    // চেক করছি লাইব্রেরি লোড হয়েছে কিনা
     if(window.supabase) {
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
         if(sessionStorage.getItem('admin') === 'yes') isAdmin = true;
         updateAdminUI();
         
         loadStats();
         loadNotices();
         loadRecentRequests();
+        
+        console.log("App Initialized Successfully");
     } else {
-        document.getElementById('recentRequestsList').innerHTML = "<p style='color:red; text-align:center;'>Library Load Error</p>";
+        console.error("Supabase library not found");
+        document.getElementById('recentRequestsList').innerHTML = "<p style='color:red; text-align:center;'>Library Load Failed. Check Internet.</p>";
     }
 }
 
