@@ -256,8 +256,10 @@ button.danger-btn{ background: #dc3545; }
 
 <script>
 // ===== CONFIG =====
+// আপনার তথ্য দিয়ে আপডেট করা হয়েছে
 const SUPABASE_URL = 'https://qhftnurfbqdtkccffagm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoZnRudXJmYnFkdGtjY2ZmYWdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MTA0MjcsImV4cCI6MjA4NzQ4NjQyN30.pNEjziqmkIP5vIC7Iu2Qwkz25cysKHoVMXJme5ARwTE';
+
 const ADMIN_EMAIL = "admin@srb.com";
 const ADMIN_PASS = "srb@admin";
 const EMAILJS_PUBLIC_KEY = "tTDL_g9ChY2fiUl4t";
@@ -277,7 +279,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initApp() {
-    // Check if library loaded
     if (window.supabase) {
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         if(typeof emailjs !== 'undefined') emailjs.init(EMAILJS_PUBLIC_KEY);
@@ -291,8 +292,7 @@ function initApp() {
         loadRecentRequests();
         loadNotices();
     } else {
-        // Fallback if library fails to load in time
-        console.error("Library not found, retrying...");
+        console.error("Library load failed");
         document.getElementById('recentRequestsList').innerHTML = "<p style='color:red; text-align:center;'>Connection Error. Check Internet.</p>";
     }
 }
